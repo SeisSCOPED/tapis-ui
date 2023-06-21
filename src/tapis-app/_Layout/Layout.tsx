@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useList } from 'tapis-hooks/tenants';
 import './Layout.scss';
 import { useTapisConfig } from 'tapis-hooks';
+import { useLogin } from 'tapis-hooks/authenticator';
 import {
   ButtonDropdown,
   DropdownToggle,
@@ -18,45 +19,34 @@ import { QueryWrapper } from 'tapis-ui/_wrappers';
 const Layout: React.FC = () => {
   const { claims } = useTapisConfig();
   const { data, isLoading, error } = useList();
-  const result = data?.result ?? [];
-  const tenants = result;
-  // const tenants = result.sort((a, b) =>
-  //   a.tenant_id! > b.tenant_id! ? 1 : a.tenant_id! < b.tenant_id! ? -1 : 0
-  // );
+  const tenants = data?.result ?? [];
   const history = useHistory();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { logout } = useLogin();
 
   const header = (
     <div className="tapis-ui__header">
-      <div>TapisUI</div>
+      <div>
+      {/* <img 
+        src="https://seisscoped.org/images/scoped_logo.jpg" 
+        alt="SCOPED Logo" 
+        width="50" 
+        height="50" 
+        /> */}
+        SCOPED Tapis UI
+      </div>
       <div></div>
       <div>
-        {claims['sub'] && (
+        {claims["sub"] && (
           <ButtonDropdown
             size="sm"
             isOpen={isOpen}
             toggle={() => setIsOpen(!isOpen)}
             className="dropdown-button"
           >
-            <DropdownToggle caret>{claims['sub']}</DropdownToggle>
-            <DropdownMenu style={{ maxHeight: '50vh', overflowY: 'scroll' }}>
-              <DropdownItem header>Tenants</DropdownItem>
-              <DropdownItem divider />
-              <QueryWrapper isLoading={isLoading} error={error}>
-                {tenants.map((tenant) => {
-                  return (
-                    <DropdownItem
-                      onClick={() => {
-                        window.location.href = tenant.base_url + '/tapis-ui/';
-                      }}
-                    >
-                      {tenant.tenant_id}
-                    </DropdownItem>
-                  );
-                })}
-              </QueryWrapper>
-              <DropdownItem divider />
-              <DropdownItem onClick={() => history.push('/logout')}>
+            <DropdownToggle caret>{claims["sub"]}</DropdownToggle>
+            <DropdownMenu style={{ maxHeight: "50vh", overflowY: "scroll" }}>
+              <DropdownItem onClick={() => history.push("/logout")}>
                 Logout
               </DropdownItem>
             </DropdownMenu>
