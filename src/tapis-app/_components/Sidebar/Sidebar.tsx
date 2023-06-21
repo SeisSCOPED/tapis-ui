@@ -30,9 +30,6 @@ const Sidebar: React.FC = () => {
             <NavItem to="/jobs" icon="jobs">
               Jobs
             </NavItem>
-            <NavItem to="/workflows" icon="publications">
-              Workflows
-            </NavItem>
           </>
         )}
       </Navbar>
