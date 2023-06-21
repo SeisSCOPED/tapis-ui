@@ -9,8 +9,8 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <TapisProvider basePath={resolveBasePath()}>
-    {/* <TapisProvider basePath="scoped.tapis.io"> */}
+    {/* <TapisProvider basePath={resolveBasePath()}> */}
+    <TapisProvider basePath="scoped.tapis.io">
 
       <Router>
         <App />
