@@ -28,7 +28,7 @@ const Layout: React.FC = () => {
 
   const header = (
     <div className="tapis-ui__header">
-      <div>TapisUI</div>
+      <div>SCOPED</div>
       <div></div>
       <div>
         {claims['sub'] && (
