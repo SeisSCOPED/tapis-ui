@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <SectionHeader className="dashboard__section-header">
-        Dashboard for {claims['tapis/tenant_id'].toUpperCase()}
+        Dashboard for {claims['tapis/tenant_id']?.toUpperCase()}
       </SectionHeader>
       <div className={styles.cards}>
         {accessToken ? (
@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </CardHeader>
               <CardBody>
-                <CardTitle>Please log in to use TAPIS</CardTitle>
+                <CardTitle>Please log in to use SCOPED</CardTitle>
               </CardBody>
               <CardFooter className={styles['card-footer']}>
                 <Link to="/login">Proceed to login</Link>
