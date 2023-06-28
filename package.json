@@ -46,7 +46,7 @@
     "web-vitals": "^1.1.2",
     "yup": "^0.32.11"
   },
-  "homepage": "https://jaeestee.github.io/tapis-ui",
+  "homepage": "https://jthet.github.io/scoped-tapis-ui/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

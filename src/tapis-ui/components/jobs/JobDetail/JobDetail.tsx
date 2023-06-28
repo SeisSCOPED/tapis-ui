@@ -15,10 +15,10 @@ const JobDetail: React.FC<{ jobUuid: string }> = ({ jobUuid }) => {
     <QueryWrapper isLoading={isLoading} error={error}>
       <h3>{job?.name}</h3>
       <h5>{job?.uuid}</h5>
-      <Link to={`/files/${job?.execSystemId}${job?.execSystemOutputDir}`}>See File</Link>
+      <Link to={`/files/${job?.execSystemId}${job?.archiveSystemDir}`}>See Files</Link>
       {job && <DescriptionList data={job} />}
     </QueryWrapper>
   );
 };
 
-export default JobDetail;
+export default JobDetail
