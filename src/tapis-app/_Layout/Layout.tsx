@@ -3,7 +3,7 @@ import { Sidebar } from 'tapis-app/_components';
 import { Router } from 'tapis-app/_Router';
 import { PageLayout } from 'tapis-ui/_common';
 import { NotificationsProvider } from 'tapis-app/_components/Notifications';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useList } from 'tapis-hooks/tenants';
 import './Layout.scss';
 import { useTapisConfig } from 'tapis-hooks';
@@ -28,8 +28,11 @@ const Layout: React.FC = () => {
 
   const header = (
     <div className="tapis-ui__header">
-      <div>SCOPED</div>
-      <div></div>
+      <Link to='/' style={{color: 'black', textDecoration: 'none'}}>
+        <div>
+          <img src="https://raw.githubusercontent.com/jaeestee/tapis-ui/main/public/SCOPED_Logo.ico" alt="SCOPED Logo"/> SCOPED
+          </div>
+      </Link>
       <div>
         {claims['sub'] && (
           <ButtonDropdown
