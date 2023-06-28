@@ -10,15 +10,15 @@ const JobDetail: React.FC<{ jobUuid: string }> = ({ jobUuid }) => {
   const job: Jobs.Job | undefined = data?.result;
 
   console.log(job?.execSystemOutputDir)
-  
+
   return (
     <QueryWrapper isLoading={isLoading} error={error}>
       <h3>{job?.name}</h3>
       <h5>{job?.uuid}</h5>
-      <Link to={`/files/${job?.execSystemId}${job?.archiveSystemDir}`}>See Files</Link>
+      <Link to={`/files/${job?.execSystemId}${job?.execSystemOutputDir}`}>See Files</Link>
       {job && <DescriptionList data={job} />}
     </QueryWrapper>
   );
 };
 
-export default JobDetail
+export default JobDetail;
