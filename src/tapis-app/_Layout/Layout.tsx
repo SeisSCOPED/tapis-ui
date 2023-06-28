@@ -3,7 +3,7 @@ import { Sidebar } from 'tapis-app/_components';
 import { Router } from 'tapis-app/_Router';
 import { PageLayout } from 'tapis-ui/_common';
 import { NotificationsProvider } from 'tapis-app/_components/Notifications';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useList } from 'tapis-hooks/tenants';
 import './Layout.scss';
 import { useTapisConfig } from 'tapis-hooks';
@@ -28,8 +28,11 @@ const Layout: React.FC = () => {
 
   const header = (
     <div className="tapis-ui__header">
-      <div>TapisUI</div>
-      <div></div>
+      <Link to='/' style={{color: 'black', textDecoration: 'none'}}>
+        <div>
+          <img src="https://raw.githubusercontent.com/jaeestee/tapis-ui/main/public/SCOPED_Logo.ico" alt="SCOPED Logo"/> SCOPED
+          </div>
+      </Link>
       <div>
         {claims['sub'] && (
           <ButtonDropdown
@@ -40,22 +43,6 @@ const Layout: React.FC = () => {
           >
             <DropdownToggle caret>{claims['sub']}</DropdownToggle>
             <DropdownMenu style={{ maxHeight: '50vh', overflowY: 'scroll' }}>
-              <DropdownItem header>Tenants</DropdownItem>
-              <DropdownItem divider />
-              <QueryWrapper isLoading={isLoading} error={error}>
-                {tenants.map((tenant) => {
-                  return (
-                    <DropdownItem
-                      onClick={() => {
-                        window.location.href = tenant.base_url + '/tapis-ui/';
-                      }}
-                    >
-                      {tenant.tenant_id}
-                    </DropdownItem>
-                  );
-                })}
-              </QueryWrapper>
-              <DropdownItem divider />
               <DropdownItem onClick={() => history.push('/logout')}>
                 Logout
               </DropdownItem>
