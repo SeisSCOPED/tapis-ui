@@ -1,0 +1,20 @@
+{
+    "id": "mtuq-app",
+    "version": "0.1.0",
+    "description": "MTUQ Containerized",
+    "jobType": "BATCH",
+    "runtime": "SINGULARITY",
+    "runtimeOptions": ["SINGULARITY_RUN"],
+    "containerImage": "docker://ghcr.io/seisscoped/mtuq:ubuntu20.04",
+    "jobAttributes": {
+        "parameterSet": {
+            "archiveFilter": { 
+                "includeLaunchFiles": false 
+            }
+        },
+        "memoryMB": 1,
+        "nodeCount": 1,
+        "coresPerNode": 1,
+        "maxMinutes": 10
+    }
+}
