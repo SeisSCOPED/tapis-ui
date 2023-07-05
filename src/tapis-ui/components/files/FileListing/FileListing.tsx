@@ -15,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
 import styles from './FileListing.module.scss';
+import AddCredentials from 'tapis-app/Systems/_components/AddCredentials';
 
 export type OnSelectCallback = (files: Array<Files.FileInfo>) => any;
 export type OnNavigateCallback = (file: Files.FileInfo) => any;
@@ -328,6 +329,21 @@ const FileListing: React.FC<FileListingProps> = ({
       className: selectedFileDict[file.path ?? ''] ? styles.selected : '',
     };
   };
+  
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+  // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
+
+  if ((error?.message)?.includes("no credentials associated with system")) {
+    return(
+      <AddCredentials systemId={systemId}/>
+    );
+  }
 
   return (
     <QueryWrapper isLoading={isLoading} error={error} className={className}>

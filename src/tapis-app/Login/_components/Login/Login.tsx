@@ -29,6 +29,8 @@ const Login: React.FC = () => {
     password: '',
   };
 
+  console.log(error)
+
   return (
     <Formik
       initialValues={initialValues}
