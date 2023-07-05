@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/tapis-ui/static/css/main.56e3a099.chunk.css",
-    "main.js": "/tapis-ui/static/js/main.f88ef94e.chunk.js",
-    "main.js.map": "/tapis-ui/static/js/main.f88ef94e.chunk.js.map",
+    "main.js": "/tapis-ui/static/js/main.4fa03b7e.chunk.js",
+    "main.js.map": "/tapis-ui/static/js/main.4fa03b7e.chunk.js.map",
     "runtime-main.js": "/tapis-ui/static/js/runtime-main.1b830984.js",
     "runtime-main.js.map": "/tapis-ui/static/js/runtime-main.1b830984.js.map",
     "static/css/2.d5e620ed.chunk.css": "/tapis-ui/static/css/2.d5e620ed.chunk.css",
-    "static/js/2.9ba073fc.chunk.js": "/tapis-ui/static/js/2.9ba073fc.chunk.js",
-    "static/js/2.9ba073fc.chunk.js.map": "/tapis-ui/static/js/2.9ba073fc.chunk.js.map",
+    "static/js/2.394182c6.chunk.js": "/tapis-ui/static/js/2.394182c6.chunk.js",
+    "static/js/2.394182c6.chunk.js.map": "/tapis-ui/static/js/2.394182c6.chunk.js.map",
     "static/js/3.fa69d186.chunk.js": "/tapis-ui/static/js/3.fa69d186.chunk.js",
     "static/js/3.fa69d186.chunk.js.map": "/tapis-ui/static/js/3.fa69d186.chunk.js.map",
     "index.html": "/tapis-ui/index.html",
     "static/css/2.d5e620ed.chunk.css.map": "/tapis-ui/static/css/2.d5e620ed.chunk.css.map",
     "static/css/main.56e3a099.chunk.css.map": "/tapis-ui/static/css/main.56e3a099.chunk.css.map",
-    "static/js/2.9ba073fc.chunk.js.LICENSE.txt": "/tapis-ui/static/js/2.9ba073fc.chunk.js.LICENSE.txt",
+    "static/js/2.394182c6.chunk.js.LICENSE.txt": "/tapis-ui/static/js/2.394182c6.chunk.js.LICENSE.txt",
     "static/media/index.css": "/tapis-ui/static/media/Cortal-Icons-1.2.a0d8332a.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.1b830984.js",
     "static/css/2.d5e620ed.chunk.css",
-    "static/js/2.9ba073fc.chunk.js",
+    "static/js/2.394182c6.chunk.js",
     "static/css/main.56e3a099.chunk.css",
-    "static/js/main.f88ef94e.chunk.js"
+    "static/js/main.4fa03b7e.chunk.js"
   ]
 }
