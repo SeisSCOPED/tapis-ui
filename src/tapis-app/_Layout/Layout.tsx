@@ -20,22 +20,26 @@ const Layout: React.FC = () => {
 
   const header = (
     <div className="tapis-ui__header">
-      <Link to='/' style={{color: 'black', textDecoration: 'none'}}>
+      <Link to="/" style={{ color: 'black', textDecoration: 'none' }}>
         <div>
-          <img src="https://raw.githubusercontent.com/jaeestee/tapis-ui/main/public/SCOPED_Logo.ico" alt="SCOPED Logo"/> SCOPED
-          </div>
+          <img
+            src="https://raw.githubusercontent.com/jaeestee/tapis-ui/main/public/SCOPED_Logo.ico"
+            alt="SCOPED Logo"
+          />{' '}
+          SCOPED
+        </div>
       </Link>
       <div>
-        {claims["sub"] && (
+        {claims['sub'] && (
           <ButtonDropdown
             size="sm"
             isOpen={isOpen}
             toggle={() => setIsOpen(!isOpen)}
             className="dropdown-button"
           >
-            <DropdownToggle caret>{claims["sub"]}</DropdownToggle>
-            <DropdownMenu style={{ maxHeight: "50vh", overflowY: "scroll" }}>
-              <DropdownItem onClick={() => history.push("/logout")}>
+            <DropdownToggle caret>{claims['sub']}</DropdownToggle>
+            <DropdownMenu style={{ maxHeight: '50vh', overflowY: 'scroll' }}>
+              <DropdownItem onClick={() => history.push('/logout')}>
                 Logout
               </DropdownItem>
             </DropdownMenu>
