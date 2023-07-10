@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     password: '',
   };
 
-  console.log(error)
+  console.log(error);
 
   return (
     <Formik
