@@ -36,7 +36,6 @@ const AddCredentials: React.FC<AddCredentialsProps> = ({systemId}) => {
     password: '',
   };
 
-  console.log(isLoading)
   return (
     <Formik
       initialValues={initialValues}
