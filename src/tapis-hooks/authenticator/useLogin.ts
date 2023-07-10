@@ -31,7 +31,7 @@ const useLogin = () => {
     ({ username, password }) => login(username, password, basePath),
     { onSuccess }
   );
-  
+
   // Return hook object with loading states and login function
   return {
     isLoading,

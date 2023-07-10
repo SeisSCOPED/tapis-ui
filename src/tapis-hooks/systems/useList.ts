@@ -3,10 +3,11 @@ import { list } from 'tapis-api/systems';
 import { Systems } from '@tapis/tapis-typescript';
 import { useTapisConfig } from 'tapis-hooks';
 import QueryKeys from './queryKeys';
-import { ListTypeEnum } from '@tapis/tapis-typescript-systems'
+import { ListTypeEnum } from '@tapis/tapis-typescript-systems';
 
-export const defaultParams: Systems.GetSystemsRequest = {listType: ListTypeEnum.All};
-
+export const defaultParams: Systems.GetSystemsRequest = {
+  listType: ListTypeEnum.All,
+};
 
 const useList = (
   params: Systems.GetSystemsRequest = defaultParams,

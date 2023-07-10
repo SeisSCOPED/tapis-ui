@@ -329,7 +329,7 @@ const FileListing: React.FC<FileListingProps> = ({
       className: selectedFileDict[file.path ?? ''] ? styles.selected : '',
     };
   };
-  
+
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
@@ -339,10 +339,8 @@ const FileListing: React.FC<FileListingProps> = ({
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
 
-  if ((error?.message)?.includes("no credentials associated with system")) {
-    return(
-      <AddCredentials systemId={systemId}/>
-    );
+  if (error?.message?.includes('no credentials associated with system')) {
+    return <AddCredentials systemId={systemId} />;
   }
 
   return (

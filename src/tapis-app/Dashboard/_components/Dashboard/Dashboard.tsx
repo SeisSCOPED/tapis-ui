@@ -15,8 +15,7 @@ import { useList as useJobsList } from 'tapis-hooks/jobs';
 import { useList as useAppsList } from 'tapis-hooks/apps';
 import styles from './Dashboard.module.scss';
 import './Dashboard.scss';
-import { ListTypeEnum } from '@tapis/tapis-typescript-systems'
-
+import { ListTypeEnum } from '@tapis/tapis-typescript-systems';
 
 type DashboardCardProps = {
   icon: string;
@@ -65,7 +64,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 
 const Dashboard: React.FC = () => {
   const { accessToken, claims } = useTapisConfig();
-  const systems = useSystemsList({listType: ListTypeEnum.All});
+  const systems = useSystemsList({ listType: ListTypeEnum.All });
   const jobs = useJobsList({});
   const apps = useAppsList({ select: 'jobAttributes,version' });
 
@@ -77,7 +76,10 @@ const Dashboard: React.FC = () => {
       <div className={styles.cards}>
         {accessToken ? (
           <>
-            <Link to='/systems' style={{color: 'black', textDecoration: 'none'}}>
+            <Link
+              to="/systems"
+              style={{ color: 'black', textDecoration: 'none' }}
+            >
               <DashboardCard
                 icon="data-files"
                 name="Systems"
@@ -87,7 +89,10 @@ const Dashboard: React.FC = () => {
                 loading={systems?.isLoading}
               />
             </Link>
-            <Link to='/files' style={{color: 'black', textDecoration: 'none'}}>
+            <Link
+              to="/files"
+              style={{ color: 'black', textDecoration: 'none' }}
+            >
               <DashboardCard
                 icon="folder"
                 name="Files"
@@ -97,7 +102,7 @@ const Dashboard: React.FC = () => {
                 loading={systems?.isLoading}
               />
             </Link>
-            <Link to='/apps' style={{color: 'black', textDecoration: 'none'}}>
+            <Link to="/apps" style={{ color: 'black', textDecoration: 'none' }}>
               <DashboardCard
                 icon="applications"
                 name="Applications"
@@ -107,7 +112,7 @@ const Dashboard: React.FC = () => {
                 loading={apps?.isLoading}
               />
             </Link>
-            <Link to='/jobs' style={{color: 'black', textDecoration: 'none'}}>
+            <Link to="/jobs" style={{ color: 'black', textDecoration: 'none' }}>
               <DashboardCard
                 icon="jobs"
                 name="Jobs"
@@ -119,7 +124,7 @@ const Dashboard: React.FC = () => {
             </Link>
           </>
         ) : (
-          <Link to='/login' style={{color: 'black', textDecoration: 'none'}}>
+          <Link to="/login" style={{ color: 'black', textDecoration: 'none' }}>
             <Card>
               <CardHeader>
                 <div className={styles['card-header']}>
