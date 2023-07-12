@@ -1,4 +1,4 @@
-import { Button} from 'reactstrap';
+import { Button } from 'reactstrap';
 import { GenericModal } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
