@@ -1,9 +1,10 @@
-import { Button, FormGroup, Label, Input } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { GenericModal } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
 import { Form, Formik } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
+import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMakeNewSystem } from 'tapis-hooks/systems';
 import { useEffect, useCallback } from 'react';
 import styles from './CreateSystemModal.module.scss';
@@ -13,12 +14,14 @@ import {
   AuthnEnum,
   JobRuntime,
   RuntimeTypeEnum,
+  LogicalQueue,
+  SchedulerTypeEnum,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
 
-const systemTypes = ['LINUX', 'S3', 'IRODS', 'GLOBUS'];
-const authnMethods = ['PASSWORD', 'PKI_KEYS', 'ACCESS_KEY', 'TOKEN', 'CERT'];
+const systemTypes = Object.values(SystemTypeEnum);
+const authnMethods = Object.values(AuthnEnum);
 const booleanValues = ['True', 'False'];
 
 const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
@@ -63,6 +66,27 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: [{ runtimeType: RuntimeTypeEnum.Singularity }],
+    effectiveUserId: '${apiUserId}',
+    canRunBatch: 'True',
+    batchScheduler: SchedulerTypeEnum.Slurm,
+    batchSchedulerProfile: 'tacc',
+    batchDefaultLogicalQueue: 'tapisNormal',
+    batchLogicalQueues: [
+      {
+        name: 'tapisNormal',
+        hpcQueueName: 'normal',
+        maxJobs: 50,
+        maxJobsPerUser: 10,
+        minNodeCount: 1,
+        maxNodeCount: 16,
+        minCoresPerNode: 1,
+        maxCoresPerNode: 68,
+        minMemoryMB: 1,
+        maxMemoryMB: 16384,
+        minMinutes: 1,
+        maxMinutes: 60,
+      },
+    ],
   };
 
   const onSubmit = ({
@@ -74,6 +98,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir,
     jobWorkingDir,
     jobRuntimes,
+    effectiveUserId,
+    canRunBatch,
+    batchScheduler,
+    batchSchedulerProfile,
+    batchDefaultLogicalQueue,
+    batchLogicalQueues,
   }: {
     sysname: string;
     systemType: SystemTypeEnum;
@@ -83,8 +113,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: Array<JobRuntime>;
+    effectiveUserId: string;
+    canRunBatch: string;
+    batchScheduler: SchedulerTypeEnum;
+    batchSchedulerProfile: string;
+    batchDefaultLogicalQueue: string;
+    batchLogicalQueues: Array<LogicalQueue>;
   }) => {
     const canExecBool = canExec.toLowerCase() === 'true';
+    const canRunBatchBool = canRunBatch.toLowerCase() === 'true';
     makeNewSystem(
       {
         id: sysname,
@@ -95,6 +132,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         rootDir,
         jobWorkingDir,
         jobRuntimes,
+        effectiveUserId,
+        canRunBatch: canRunBatchBool,
+        batchScheduler,
+        batchSchedulerProfile,
+        batchDefaultLogicalQueue,
+        batchLogicalQueues,
       },
       true,
       { onSuccess }
@@ -118,90 +161,66 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                 <FormikInput
                   name="sysname"
                   label="System Name"
-                  required={false}
+                  required={true}
                   description={`System name`}
                   aria-label="Input"
                 />
-                <FormGroup>
-                  <Label
-                    style={{ fontSize: 14, fontWeight: 'bold' }}
-                    for="systemType"
-                  >
-                    System Type
-                  </Label>
-                  <Input
-                    id="systemType"
-                    name="systemType"
-                    type="select"
-                    value={values.systemType}
-                    onChange={handleChange}
-                  >
-                    <option disabled value="">
-                      Select a system type
-                    </option>
-                    {systemTypes.map((values) => {
-                      return <option>{values}</option>;
-                    })}
-                  </Input>
-                </FormGroup>
+                <FormikSelect
+                  name="systemType"
+                  description="The system type"
+                  label="System Type"
+                  required={true}
+                  data-testid="systemType"
+                >
+                  <option disabled value={''}>
+                    Select a system type
+                  </option>
+                  {systemTypes.map((values) => {
+                    return <option>{values}</option>;
+                  })}
+                </FormikSelect>
                 <FormikInput
                   name="host"
                   label="Host"
-                  required={false}
+                  required={true}
                   description={`Host of the system`}
                   aria-label="Input"
                 />
-                <FormGroup>
-                  <Label
-                    style={{ fontSize: 14, fontWeight: 'bold' }}
-                    for="defaultAuthnMethod"
-                  >
-                    Default Authentication Method
-                  </Label>
-                  <Input
-                    id="defaultAuthnMethod"
-                    name="defaultAuthnMethod"
-                    type="select"
-                    value={values.defaultAuthnMethod}
-                    onChange={handleChange}
-                  >
-                    <option disabled value="">
-                      Select a default athenication method
-                    </option>
-                    {authnMethods.map((values) => {
-                      return <option>{values}</option>;
-                    })}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label
-                    style={{ fontSize: 14, fontWeight: 'bold' }}
-                    for="canExec"
-                  >
-                    Can Execute
-                  </Label>
-                  <Input
-                    id="canExec"
-                    name="canExec"
-                    type="select"
-                    value={values.canExec}
-                    onChange={handleChange}
-                  >
-                    <option disabled value="">
-                      Select an execute option
-                    </option>
-                    {booleanValues.map((values) => {
-                      return <option>{values}</option>;
-                    })}
-                  </Input>
-                  <FormikInput
-                    name="rootDir"
-                    label="Root Directory"
-                    required={false}
-                    description={`Root Directory`}
-                    aria-label="Input"
-                  />
-                </FormGroup>
+                <FormikSelect
+                  name="defaultAuthnMethod"
+                  description="Authentication method for the system"
+                  label="Default Authentication Method"
+                  required={true}
+                  data-testid="defaultAuthnMethod"
+                >
+                  <option disabled value="">
+                    Select a default athenication method
+                  </option>
+                  {authnMethods.map((values) => {
+                    return <option>{values}</option>;
+                  })}
+                </FormikSelect>
+                <FormikSelect
+                  name="canExec"
+                  description="Decides if the system can execute"
+                  label="Can Execute"
+                  required={true}
+                  data-testid="canExec"
+                >
+                  <option disabled value="">
+                    Select an execute option
+                  </option>
+                  {booleanValues.map((values) => {
+                    return <option>{values}</option>;
+                  })}
+                </FormikSelect>
+                <FormikInput
+                  name="rootDir"
+                  label="Root Directory"
+                  required={true}
+                  description={`Root Directory`}
+                  aria-label="Input"
+                />
               </Form>
             )}
           </Formik>
