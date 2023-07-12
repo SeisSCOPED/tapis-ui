@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/tapis-ui/static/css/main.c328f8b5.chunk.css",
-    "main.js": "/tapis-ui/static/js/main.81574bb6.chunk.js",
-    "main.js.map": "/tapis-ui/static/js/main.81574bb6.chunk.js.map",
+    "main.js": "/tapis-ui/static/js/main.25dee9a4.chunk.js",
+    "main.js.map": "/tapis-ui/static/js/main.25dee9a4.chunk.js.map",
     "runtime-main.js": "/tapis-ui/static/js/runtime-main.00db697a.js",
     "runtime-main.js.map": "/tapis-ui/static/js/runtime-main.00db697a.js.map",
     "static/css/2.d5e620ed.chunk.css": "/tapis-ui/static/css/2.d5e620ed.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.d5e620ed.chunk.css",
     "static/js/2.d272b19e.chunk.js",
     "static/css/main.c328f8b5.chunk.css",
-    "static/js/main.81574bb6.chunk.js"
+    "static/js/main.25dee9a4.chunk.js"
   ]
 }
