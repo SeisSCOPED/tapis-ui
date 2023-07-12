@@ -23,7 +23,7 @@ const Layout: React.FC = () => {
       <Link to="/" style={{ color: 'black', textDecoration: 'none' }}>
         <div>
           <img
-            src="https://raw.githubusercontent.com/jaeestee/tapis-ui/main/public/SCOPED_Logo.ico"
+            src="https://raw.githubusercontent.com/jaeestee/scoped-tapis-ui/main/public/SCOPED_Logo.ico"
             alt="SCOPED Logo"
           />{' '}
           SCOPED
