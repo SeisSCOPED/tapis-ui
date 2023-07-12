@@ -14,6 +14,8 @@ import {
   AuthnEnum,
   JobRuntime,
   RuntimeTypeEnum,
+  LogicalQueue,
+  SchedulerTypeEnum,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
@@ -64,6 +66,27 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: [{ runtimeType: RuntimeTypeEnum.Singularity }],
+    effectiveUserId: '${apiUserId}',
+    canRunBatch: 'True',
+    batchScheduler: SchedulerTypeEnum.Slurm,
+    batchSchedulerProfile: 'tacc',
+    batchDefaultLogicalQueue: 'tapisNormal',
+    batchLogicalQueues: [
+      {
+        name: 'tapisNormal',
+        hpcQueueName: 'normal',
+        maxJobs: 50,
+        maxJobsPerUser: 10,
+        minNodeCount: 1,
+        maxNodeCount: 16,
+        minCoresPerNode: 1,
+        maxCoresPerNode: 68,
+        minMemoryMB: 1,
+        maxMemoryMB: 16384,
+        minMinutes: 1,
+        maxMinutes: 60,
+      },
+    ],
   };
 
   const onSubmit = ({
@@ -75,6 +98,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir,
     jobWorkingDir,
     jobRuntimes,
+    effectiveUserId,
+    canRunBatch,
+    batchScheduler,
+    batchSchedulerProfile,
+    batchDefaultLogicalQueue,
+    batchLogicalQueues,
   }: {
     sysname: string;
     systemType: SystemTypeEnum;
@@ -84,8 +113,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: Array<JobRuntime>;
+    effectiveUserId: string;
+    canRunBatch: string;
+    batchScheduler: SchedulerTypeEnum;
+    batchSchedulerProfile: string;
+    batchDefaultLogicalQueue: string;
+    batchLogicalQueues: Array<LogicalQueue>;
   }) => {
     const canExecBool = canExec.toLowerCase() === 'true';
+    const canRunBatchBool = canRunBatch.toLowerCase() === 'true';
     makeNewSystem(
       {
         id: sysname,
@@ -96,6 +132,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         rootDir,
         jobWorkingDir,
         jobRuntimes,
+        effectiveUserId,
+        canRunBatch: canRunBatchBool,
+        batchScheduler,
+        batchSchedulerProfile,
+        batchDefaultLogicalQueue,
+        batchLogicalQueues,
       },
       true,
       { onSuccess }
