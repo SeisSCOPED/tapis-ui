@@ -20,8 +20,8 @@ import {
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
 
-const systemTypes = ['LINUX', 'S3', 'IRODS', 'GLOBUS'];
-const authnMethods = ['PASSWORD', 'PKI_KEYS', 'ACCESS_KEY', 'TOKEN', 'CERT'];
+const systemTypes = Object.values(SystemTypeEnum);
+const authnMethods = Object.values(AuthnEnum);
 const booleanValues = ['True', 'False'];
 
 const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
