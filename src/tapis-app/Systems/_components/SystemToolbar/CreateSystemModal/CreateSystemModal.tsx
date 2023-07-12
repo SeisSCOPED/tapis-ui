@@ -20,13 +20,14 @@ import {
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
 
+//Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
 const authnMethods = Object.values(AuthnEnum);
 const booleanValues = ['True', 'False'];
 
 const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
+  //Allows the system list to update without the user having to refresh the page
   const queryClient = useQueryClient();
-
   const onSuccess = useCallback(() => {
     queryClient.invalidateQueries(queryKeys.list);
   }, [queryClient]);
@@ -55,6 +56,11 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         "Must contain only alphanumeric characters and the following: '.', '_', '-'"
       )
       .required('Host name is a required field'),
+    root: Yup.string(),
+    jobWorkingDir: Yup.string(),
+    effectiveUserId: Yup.string(),
+    batchSchedulerProfile: Yup.string(),
+    batchDefaultLogicalQueue: Yup.string(),
   });
 
   const initialValues = {
@@ -120,8 +126,11 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     batchDefaultLogicalQueue: string;
     batchLogicalQueues: Array<LogicalQueue>;
   }) => {
+    //Converting the string into a boolean value
     const canExecBool = canExec.toLowerCase() === 'true';
     const canRunBatchBool = canRunBatch.toLowerCase() === 'true';
+
+    //Creating the new system
     makeNewSystem(
       {
         id: sysname,
