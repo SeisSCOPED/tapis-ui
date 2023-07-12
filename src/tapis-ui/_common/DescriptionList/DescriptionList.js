@@ -76,7 +76,7 @@ const DescriptionList = ({ className, data, density, direction }) => {
       </div>
     );
   }
-  
+
   return (
     <dl className={`${className} ${containerStyleNames}`} data-testid="list">
       {entries.map(([key, value]) => (
