@@ -2,9 +2,9 @@ import { Systems } from '@tapis/tapis-typescript';
 import { apiGenerator, errorDecoder } from 'tapis-api/utils';
 
 const list = (
-  params: Systems.GetSystemsRequest,
+  params: Systems.GetSystemsRequest, // contains all params, example: {select: 'allAttributes', listType: ListTypeEnum.All}
   basePath: string,
-  jwt: string
+  jwt: string, 
 ) => {
   const api: Systems.SystemsApi = apiGenerator<Systems.SystemsApi>(
     Systems,
@@ -16,3 +16,4 @@ const list = (
 };
 
 export default list;
+
