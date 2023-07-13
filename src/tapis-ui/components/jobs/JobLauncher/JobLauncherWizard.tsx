@@ -11,10 +11,17 @@ import {
 import { useJobLauncher, JobLauncherProvider } from './components';
 import { JobStep } from '.';
 import jobSteps from './steps';
+import { Systems } from '@tapis/tapis-typescript';
+import { ListTypeEnum } from '@tapis/tapis-typescript-systems';
 
 type JobLauncherWizardProps = {
   appId: string;
   appVersion: string;
+};
+
+export const defaultParams: Systems.GetSystemsRequest = {
+  select: 'allAttributes',
+  listType: ListTypeEnum.All,
 };
 
 export const JobLauncherWizardRender: React.FC<{ jobSteps: Array<JobStep> }> =
@@ -79,7 +86,7 @@ const JobLauncherWizard: React.FC<JobLauncherWizardProps> = ({
     isLoading: systemsIsLoading,
     error: systemsError,
   } = useSystemsList(
-    { select: 'allAttributes' },
+    defaultParams,
     { refetchOnWindowFocus: false }
   );
   const {
