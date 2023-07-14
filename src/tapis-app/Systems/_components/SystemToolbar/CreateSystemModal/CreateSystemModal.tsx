@@ -1,4 +1,4 @@
-import { Button } from 'reactstrap';
+import { Button, Input, FormGroup, Label } from 'reactstrap';
 import { GenericModal } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
@@ -6,19 +6,19 @@ import { Form, Formik } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
 import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMakeNewSystem } from 'tapis-hooks/systems';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import styles from './CreateSystemModal.module.scss';
 import * as Yup from 'yup';
 import {
   SystemTypeEnum,
   AuthnEnum,
-  JobRuntime,
   RuntimeTypeEnum,
   LogicalQueue,
   SchedulerTypeEnum,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
+import AdvancedSettings from './AdvancedSettings';
 
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
@@ -38,6 +38,11 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   useEffect(() => {
     reset();
   }, [reset]);
+
+  const [simplified, setSimplified] = useState(false);
+  const onChange = useCallback(() => {
+    setSimplified(!simplified);
+  }, [setSimplified, simplified]);
 
   const validationSchema = Yup.object({
     sysname: Yup.string()
@@ -71,7 +76,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     canExec: 'True',
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
-    jobRuntimes: [{ runtimeType: RuntimeTypeEnum.Singularity }],
+    jobRuntimes: RuntimeTypeEnum.Singularity,
     effectiveUserId: '${apiUserId}',
     canRunBatch: 'True',
     batchScheduler: SchedulerTypeEnum.Slurm,
@@ -118,7 +123,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     canExec: string;
     rootDir: string;
     jobWorkingDir: string;
-    jobRuntimes: Array<JobRuntime>;
+    jobRuntimes: RuntimeTypeEnum;
     effectiveUserId: string;
     canRunBatch: string;
     batchScheduler: SchedulerTypeEnum;
@@ -130,6 +135,8 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     const canExecBool = canExec.toLowerCase() === 'true';
     const canRunBatchBool = canRunBatch.toLowerCase() === 'true';
 
+    const jobRuntimesArray = [{ runtimeType: jobRuntimes }]
+
     //Creating the new system
     makeNewSystem(
       {
@@ -140,7 +147,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         canExec: canExecBool,
         rootDir,
         jobWorkingDir,
-        jobRuntimes,
+        jobRuntimes: jobRuntimesArray,
         effectiveUserId,
         canRunBatch: canRunBatchBool,
         batchScheduler,
@@ -156,7 +163,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   return (
     <GenericModal
       toggle={toggle}
-      className={styles['modal']}
+      className={simplified ? styles['advanced-settings']: ''}
       title="Create New System"
       body={
         <div>
@@ -165,8 +172,14 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {({ values, handleChange }) => (
+            {() => (
               <Form id="newsystem-form">
+                <FormGroup check>
+                  <Label check size="sm" className={`form-field__label`}>
+                    <Input type="checkbox" onChange={onChange} />
+                    Advanced Settings
+                  </Label>
+                </FormGroup>
                 <FormikInput
                   name="sysname"
                   label="System Name"
@@ -223,13 +236,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     return <option>{values}</option>;
                   })}
                 </FormikSelect>
-                <FormikInput
-                  name="rootDir"
-                  label="Root Directory"
-                  required={true}
-                  description={`Root Directory`}
-                  aria-label="Input"
-                />
+                <AdvancedSettings simplified={simplified}/>
               </Form>
             )}
           </Formik>
