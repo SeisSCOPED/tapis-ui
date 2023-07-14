@@ -4,7 +4,7 @@
   "appId": "mtuq-app",
   "appVersion": "0.1.0",
   "archiveOnAppError": false,
-  "nodeCount": 4, 
+  "nodeCount": 4,
   "coresPerNode": 1,
   "jobType": "BATCH",
   "memoryMB": 4000,
@@ -12,10 +12,10 @@
   "isMpi": true,
   "mpiCmd": "ibrun",
   "fileInputs": [
-    { 
+    {
       "name": "Python Script",
       "sourceUrl": "tapis://Frontera.exec/scratch1/09052/jacksont/DetailedAnalysis.py",
-      "targetPath": "*/entrypoint.py",
+      "targetPath": "entrypoint.py",
       "description": "user input file",
       "autoMountLocal": true
     }
