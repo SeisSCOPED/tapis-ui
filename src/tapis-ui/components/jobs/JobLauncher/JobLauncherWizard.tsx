@@ -85,10 +85,7 @@ const JobLauncherWizard: React.FC<JobLauncherWizardProps> = ({
     data: systemsData,
     isLoading: systemsIsLoading,
     error: systemsError,
-  } = useSystemsList(
-    defaultParams,
-    { refetchOnWindowFocus: false }
-  );
+  } = useSystemsList(defaultParams, { refetchOnWindowFocus: false });
   const {
     data: schedulerProfilesData,
     isLoading: schedulerProfilesIsLoading,
