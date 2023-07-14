@@ -1,8 +1,8 @@
 {
   "id": "mtuq-app",
   "owner": "jacksont",
-  "version": "1.1",
-  "description": "MTUQ Containerizeds",
+  "version": "1.0",
+  "description": "MTUQ Containerized",
   "jobType": "BATCH",
   "runtime": "SINGULARITY",
   "runtimeOptions": ["SINGULARITY_RUN"],
@@ -12,7 +12,6 @@
     "description": "MTUQ Job Attributes",
     "execSystemId": "Frontera.exec",
     "dynamicExecSystem": false,
-    "execSystemLogicalQueue": null,
     "isMpi": true,
     "mpiCmd": "ibrun",
     "parameterSet": {
@@ -29,7 +28,8 @@
       "envVariables": [
         {
           "key": "SYNGINE_CACHE",
-          "value": "$SCRATCH/syngine_cache"
+          "value": "$SCRATCH/syngine_cache",
+          "description": "There must be a folder in your $SCRATCH directory named 'syngine_cache'"
         }
       ],
       "archiveFilter": {
@@ -42,8 +42,15 @@
       { 
         "name": "Python Script",
         "inputMode": "REQUIRED",
-        "targetPath": "*/entrypoint.py",
-        "description": "Put in the url to the python script you are running. In the format: tapis://Frontera.exec/scratch1/<num>/<user>/<script>.py ",
+        "targetPath": "entrypoint.py",
+        "description": "Put in the url to the python script you are running. In the format: tapis://Frontera.exec/scratch1/<num>/<user>/<script>.py * DO NOT CHANGE THE TARGET PATH * ",
+        "autoMountLocal": true
+      },
+      { 
+        "name": "Data",
+        "inputMode": "OPTIONAL",
+        "targetPath": "*",
+        "description": "URL to a data folder, in the format: tapis://Frontera.exec/scratch1/<num>/<user>/<script>.py ",
         "autoMountLocal": true
       }
     ],
