@@ -1,8 +1,8 @@
 {
-  "name": "mtuq-app-0.1.0",
+  "name": "mtuq-job",
   "description": "MTUQ Containerized",
   "appId": "mtuq-app",
-  "appVersion": "0.1.0",
+  "appVersion": "1.0",
   "archiveOnAppError": false,
   "nodeCount": 4,
   "coresPerNode": 1,
