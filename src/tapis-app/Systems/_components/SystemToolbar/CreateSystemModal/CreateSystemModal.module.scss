@@ -1,5 +1,12 @@
 .advanced-settings {
   padding-top: 50rem;
+  min-width: 40rem;
   size: auto;
   overflow: auto;
+  overflow-anchor: none;
+}
+
+.simplified-settings {
+  min-width: 40rem;
+  size: auto;
 }

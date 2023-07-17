@@ -221,7 +221,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   return (
     <GenericModal
       toggle={toggle}
-      className={simplified ? styles['advanced-settings'] : ''}
+      className={simplified ? styles['advanced-settings'] : styles['simplified-settings']}
       title="Create New System"
       body={
         <div>
