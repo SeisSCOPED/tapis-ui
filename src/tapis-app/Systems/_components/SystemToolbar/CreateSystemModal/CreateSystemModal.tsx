@@ -4,7 +4,7 @@ import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
 import { Form, Formik } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
-import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
+import { FormikSelect, FormikCheck } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMakeNewSystem } from 'tapis-hooks/systems';
 import { useEffect, useCallback, useState } from 'react';
 import styles from './CreateSystemModal.module.scss';
@@ -13,7 +13,6 @@ import {
   SystemTypeEnum,
   AuthnEnum,
   RuntimeTypeEnum,
-  LogicalQueue,
   SchedulerTypeEnum,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
@@ -23,7 +22,6 @@ import AdvancedSettings from './AdvancedSettings';
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
 const authnMethods = Object.values(AuthnEnum);
-const booleanValues = ['True', 'False'];
 
 const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   //Allows the system list to update without the user having to refresh the page
@@ -47,61 +45,71 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   const validationSchema = Yup.object({
     sysname: Yup.string()
       .min(1)
-      .max(255, 'System name should not be longer than 255 characters')
+      .max(80, 'System name should not be longer than 80 characters')
       .matches(
         /^[a-zA-Z0-9_.-]+$/,
         "Must contain only alphanumeric characters and the following: '.', '_', '-'"
       )
       .required('System name is a required field'),
+    description: Yup.string()
+      .max(2048, 'Description schould not be longer than 2048 characters'),
     host: Yup.string()
       .min(1)
-      .max(255, 'Host name should not be longer than 255 characters')
+      .max(256, 'Host name should not be longer than 256 characters')
       .matches(
         /^[a-zA-Z0-9_.-]+$/,
         "Must contain only alphanumeric characters and the following: '.', '_', '-'"
       )
       .required('Host name is a required field'),
-    root: Yup.string(),
-    jobWorkingDir: Yup.string(),
-    effectiveUserId: Yup.string(),
-    batchSchedulerProfile: Yup.string(),
-    batchDefaultLogicalQueue: Yup.string(),
+    rootDir: Yup.string()
+      .min(1)
+      .max(4096, 'Root Directory should not be longer than 4096 characters'),
+    jobWorkingDir: Yup.string()
+      .min(1)
+      .max(4096, 'Job Working Directory should not be longer than 4096 characters'),
+    effectiveUserId: Yup.string()
+      .min(1)
+      .max(60, 'Effective User ID should not be longer than 60 characters'),
+    batchSchedulerProfile: Yup.string()
+      .min(1)
+      .max(80, 'Batch Scheduler Profile should not be longer than 80 characters'),
+    batchDefaultLogicalQueue: Yup.string()
+      .min(1)
+      .max(128, 'Batch Default Logical Queue should not be longer than 128 characters'),
   });
 
   const initialValues = {
     sysname: '',
+    description: '',
     systemType: SystemTypeEnum.Linux,
     host: 'stampede2.tacc.utexas.edu',
     defaultAuthnMethod: AuthnEnum.Password,
-    canExec: 'True',
+    canExec: true,
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: RuntimeTypeEnum.Singularity,
     effectiveUserId: '${apiUserId}',
-    canRunBatch: 'True',
+    canRunBatch: true,
     batchScheduler: SchedulerTypeEnum.Slurm,
     batchSchedulerProfile: 'tacc',
     batchDefaultLogicalQueue: 'tapisNormal',
-    batchLogicalQueues: [
-      {
-        name: 'tapisNormal',
-        hpcQueueName: 'normal',
-        maxJobs: 50,
-        maxJobsPerUser: 10,
-        minNodeCount: 1,
-        maxNodeCount: 16,
-        minCoresPerNode: 1,
-        maxCoresPerNode: 68,
-        minMemoryMB: 1,
-        maxMemoryMB: 16384,
-        minMinutes: 1,
-        maxMinutes: 60,
-      },
-    ],
+    batchLogicalQueuesName: 'tapisNormal',
+    hpcQueueName: 'normal',
+    maxJobs: 50,
+    maxJobsPerUser: 10,
+    minNodeCount: 1,
+    maxNodeCount: 16,
+    minCoresPerNode: 1,
+    maxCoresPerNode: 68,
+    minMemoryMB: 1,
+    maxMemoryMB: 16384,
+    minMinutes: 1,
+    maxMinutes: 60,
   };
 
   const onSubmit = ({
     sysname,
+    description,
     systemType,
     host,
     defaultAuthnMethod,
@@ -114,42 +122,79 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     batchScheduler,
     batchSchedulerProfile,
     batchDefaultLogicalQueue,
-    batchLogicalQueues,
+    batchLogicalQueuesName,
+    hpcQueueName,
+    maxJobs,
+    maxJobsPerUser,
+    minNodeCount,
+    maxNodeCount,
+    minCoresPerNode,
+    maxCoresPerNode,
+    minMemoryMB,
+    maxMemoryMB,
+    minMinutes,
+    maxMinutes,
   }: {
     sysname: string;
+    description: string;
     systemType: SystemTypeEnum;
     host: string;
     defaultAuthnMethod: AuthnEnum;
-    canExec: string;
+    canExec: boolean;
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: RuntimeTypeEnum;
     effectiveUserId: string;
-    canRunBatch: string;
+    canRunBatch: boolean;
     batchScheduler: SchedulerTypeEnum;
     batchSchedulerProfile: string;
     batchDefaultLogicalQueue: string;
-    batchLogicalQueues: Array<LogicalQueue>;
+    
+    //batchLogicalQueues
+    batchLogicalQueuesName: string;
+    hpcQueueName: string;
+    maxJobs: number;
+    maxJobsPerUser: number;
+    minNodeCount: number;
+    maxNodeCount: number;
+    minCoresPerNode: number;
+    maxCoresPerNode: number;
+    minMemoryMB: number;
+    maxMemoryMB: number;
+    minMinutes: number;
+    maxMinutes: number;
   }) => {
     //Converting the string into a boolean value
-    const canExecBool = canExec.toLowerCase() === 'true';
-    const canRunBatchBool = canRunBatch.toLowerCase() === 'true';
-
-    const jobRuntimesArray = [{ runtimeType: jobRuntimes }]
-
+    const jobRuntimesArray = [{ runtimeType: jobRuntimes }];
+    const batchLogicalQueues = [{
+      name: batchLogicalQueuesName,
+      hpcQueueName,
+      maxJobs,
+      maxJobsPerUser,
+      minNodeCount,
+      maxNodeCount,
+      minCoresPerNode,
+      maxCoresPerNode,
+      minMemoryMB,
+      maxMemoryMB,
+      minMinutes,
+      maxMinutes,
+    },];
+    console.log(canExec);
     //Creating the new system
     makeNewSystem(
       {
         id: sysname,
+        description,
         systemType,
         host,
         defaultAuthnMethod,
-        canExec: canExecBool,
+        canExec,
         rootDir,
         jobWorkingDir,
         jobRuntimes: jobRuntimesArray,
         effectiveUserId,
-        canRunBatch: canRunBatchBool,
+        canRunBatch,
         batchScheduler,
         batchSchedulerProfile,
         batchDefaultLogicalQueue,
@@ -163,7 +208,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   return (
     <GenericModal
       toggle={toggle}
-      className={simplified ? styles['advanced-settings']: ''}
+      className={simplified ? styles['advanced-settings'] : ''}
       title="Create New System"
       body={
         <div>
@@ -185,6 +230,13 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                   label="System Name"
                   required={true}
                   description={`System name`}
+                  aria-label="Input"
+                />
+                <FormikInput
+                  name="description"
+                  label="Description"
+                  required={false}
+                  description={`System description`}
                   aria-label="Input"
                 />
                 <FormikSelect
@@ -222,21 +274,13 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     return <option>{values}</option>;
                   })}
                 </FormikSelect>
-                <FormikSelect
+                <FormikCheck
                   name="canExec"
-                  description="Decides if the system can execute"
-                  label="Can Execute"
                   required={true}
-                  data-testid="canExec"
-                >
-                  <option disabled value="">
-                    Select an execute option
-                  </option>
-                  {booleanValues.map((values) => {
-                    return <option>{values}</option>;
-                  })}
-                </FormikSelect>
-                <AdvancedSettings simplified={simplified}/>
+                  label="Can Execute"
+                  description={'Decides if the system can execute'}
+                />
+                <AdvancedSettings simplified={simplified} />
               </Form>
             )}
           </Formik>
@@ -244,6 +288,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       }
       footer={
         <SubmitWrapper
+          className={styles['modal-footer']}
           isLoading={isLoading}
           error={error}
           success={isSuccess ? `Successfully created a new system` : ''}
