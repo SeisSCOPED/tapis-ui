@@ -51,8 +51,10 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         "Must contain only alphanumeric characters and the following: '.', '_', '-'"
       )
       .required('System name is a required field'),
-    description: Yup.string()
-      .max(2048, 'Description schould not be longer than 2048 characters'),
+    description: Yup.string().max(
+      2048,
+      'Description schould not be longer than 2048 characters'
+    ),
     host: Yup.string()
       .min(1)
       .max(256, 'Host name should not be longer than 256 characters')
@@ -66,16 +68,25 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       .max(4096, 'Root Directory should not be longer than 4096 characters'),
     jobWorkingDir: Yup.string()
       .min(1)
-      .max(4096, 'Job Working Directory should not be longer than 4096 characters'),
+      .max(
+        4096,
+        'Job Working Directory should not be longer than 4096 characters'
+      ),
     effectiveUserId: Yup.string()
       .min(1)
       .max(60, 'Effective User ID should not be longer than 60 characters'),
     batchSchedulerProfile: Yup.string()
       .min(1)
-      .max(80, 'Batch Scheduler Profile should not be longer than 80 characters'),
+      .max(
+        80,
+        'Batch Scheduler Profile should not be longer than 80 characters'
+      ),
     batchDefaultLogicalQueue: Yup.string()
       .min(1)
-      .max(128, 'Batch Default Logical Queue should not be longer than 128 characters'),
+      .max(
+        128,
+        'Batch Default Logical Queue should not be longer than 128 characters'
+      ),
   });
 
   const initialValues = {
@@ -149,7 +160,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     batchScheduler: SchedulerTypeEnum;
     batchSchedulerProfile: string;
     batchDefaultLogicalQueue: string;
-    
+
     //batchLogicalQueues
     batchLogicalQueuesName: string;
     hpcQueueName: string;
@@ -166,20 +177,22 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   }) => {
     //Converting the string into a boolean value
     const jobRuntimesArray = [{ runtimeType: jobRuntimes }];
-    const batchLogicalQueues = [{
-      name: batchLogicalQueuesName,
-      hpcQueueName,
-      maxJobs,
-      maxJobsPerUser,
-      minNodeCount,
-      maxNodeCount,
-      minCoresPerNode,
-      maxCoresPerNode,
-      minMemoryMB,
-      maxMemoryMB,
-      minMinutes,
-      maxMinutes,
-    },];
+    const batchLogicalQueues = [
+      {
+        name: batchLogicalQueuesName,
+        hpcQueueName,
+        maxJobs,
+        maxJobsPerUser,
+        minNodeCount,
+        maxNodeCount,
+        minCoresPerNode,
+        maxCoresPerNode,
+        minMemoryMB,
+        maxMemoryMB,
+        minMinutes,
+        maxMinutes,
+      },
+    ];
     console.log(canExec);
     //Creating the new system
     makeNewSystem(

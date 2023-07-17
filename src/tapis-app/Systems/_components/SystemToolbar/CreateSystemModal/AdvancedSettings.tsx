@@ -98,90 +98,90 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
               aria-label="Input"
             />
             <Collapse title="Batch Logical Queue Settings">
-                <FormikInput
+              <FormikInput
                 name="batchLogicalQueuesName"
                 label="Name"
                 required={true}
                 description={`Name`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="hpcQueueName"
                 label="HPC Queue Name"
                 required={true}
                 description={`HPC queue name`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxJobs"
                 label="Max Jobs"
                 required={false}
                 description={`Maximum number of jobs`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxJobsPerUser"
                 label="Max Jobs Per User"
                 required={false}
                 description={`Maximum number of jobs per user`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="minNodeCount"
                 label="Min Node Count"
                 required={false}
                 description={`Minimum number of nodes`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxNodeCount"
                 label="Max Node Count"
                 required={false}
                 description={`Maximum number of nodes`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="minCoresPerNode"
                 label="Min Cores Per Node"
                 required={false}
                 description={`Minimum number of cores per node`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxCoresPerNode"
                 label="Max Cores Per Node"
                 required={false}
                 description={`Maximum number of cores per node`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="minMemoryMB"
                 label="Min Memory MB"
                 required={false}
                 description={`Minimum memory in MB`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxMemoryMB"
                 label="Max Memory MB"
                 required={false}
                 description={`Maximum memory in MB`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="minMinutes"
                 label="Min Minutes"
                 required={false}
                 description={`Minimum number of minutes`}
                 aria-label="Input"
-                />
-                <FormikInput
+              />
+              <FormikInput
                 name="maxMinutes"
                 label="Max Minutes"
                 required={false}
                 description={`Maximum number of minutes`}
                 aria-label="Input"
-                />
+              />
             </Collapse>
           </div>
         ) : null}
