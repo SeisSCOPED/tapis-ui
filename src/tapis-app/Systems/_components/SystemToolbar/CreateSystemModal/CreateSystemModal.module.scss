@@ -1,16 +1,12 @@
-.modal {
-  margin: 0;
+.advanced-settings {
+  padding-top: 50rem;
+  min-width: 40rem;
+  size: auto;
+  overflow: auto;
+  overflow-anchor: none;
 }
 
-.modalHeader {
-  height: 50px;
-  background: white;
-  overflow: hidden;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-}
-
-.labelStyle {
-  font-size: 14;
-  font-weight: 'bold';
+.simplified-settings {
+  min-width: 40rem;
+  size: auto;
 }

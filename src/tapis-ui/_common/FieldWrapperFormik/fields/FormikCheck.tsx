@@ -1,6 +1,6 @@
 import { FieldInputProps, Field } from 'formik';
 import { FormikInputProps } from '.';
-import { Input, FormText, FormGroup, Label } from 'reactstrap';
+import { Input, FormText, FormGroup, Label, Badge } from 'reactstrap';
 import styles from './FormikCheck.module.scss';
 
 const FormikCheck: React.FC<FormikInputProps> = ({
@@ -27,6 +27,11 @@ const FormikCheck: React.FC<FormikInputProps> = ({
         />
         {label}
       </Label>
+      {required ? (
+        <Badge color="danger" style={{ marginLeft: '10px' }}>
+          Required
+        </Badge>
+      ) : null}
       <FormText className={`form-field__help ${styles.nospace}`} color="muted">
         {description}
       </FormText>
