@@ -1,12 +1,9 @@
-import { Form, useFormikContext } from 'formik';
+import { Form } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
 import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
 import {
   RuntimeTypeEnum,
-  SystemTypeEnum
 } from '@tapis/tapis-typescript-systems';
-import { useMemo } from 'react';
-import { Systems } from '@tapis/tapis-typescript';
 import BatchSettings from './BatchSettings';
 
 const runtimeTypes = Object.values(RuntimeTypeEnum);
