@@ -88,7 +88,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         128,
         'Batch Default Logical Queue should not be longer than 128 characters'
       ),
-      proxyHost: Yup.string()
+    proxyHost: Yup.string()
       .min(1)
       .max(256, 'Proxy Host should not be longer than 256 characters'),
   });
@@ -306,15 +306,16 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     return <option>{values}</option>;
                   })}
                 </FormikSelect>
-                {true ? 
+                {true ? (
                   <FormikCheck
                     name="canExec"
                     required={true}
                     label="Can Execute"
                     description={'Decides if the system can execute'}
-                  />: null}
-                  
-                <AdvancedSettings simplified={simplified}/>
+                  />
+                ) : null}
+
+                <AdvancedSettings simplified={simplified} />
               </Form>
             )}
           </Formik>

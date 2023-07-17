@@ -1,9 +1,7 @@
 import { Form } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
 import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
-import {
-  RuntimeTypeEnum,
-} from '@tapis/tapis-typescript-systems';
+import { RuntimeTypeEnum } from '@tapis/tapis-typescript-systems';
 import BatchSettings from './BatchSettings';
 import ProxySettings from './ProxySettings';
 
@@ -14,7 +12,6 @@ type AdvancedSettingsProp = {
 };
 
 const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
-
   if (simplified) {
     return (
       <Form style={{ paddingTop: '25px' }}>
