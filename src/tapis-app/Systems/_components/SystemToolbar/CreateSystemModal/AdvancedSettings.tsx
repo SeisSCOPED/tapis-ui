@@ -5,6 +5,7 @@ import {
   RuntimeTypeEnum,
 } from '@tapis/tapis-typescript-systems';
 import BatchSettings from './BatchSettings';
+import ProxySettings from './ProxySettings';
 
 const runtimeTypes = Object.values(RuntimeTypeEnum);
 
@@ -54,6 +55,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
           aria-label="Input"
         />
         <BatchSettings />
+        <ProxySettings />
       </Form>
     );
   } else {

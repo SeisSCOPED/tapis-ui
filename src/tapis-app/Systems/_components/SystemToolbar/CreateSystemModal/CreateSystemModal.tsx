@@ -2,11 +2,11 @@ import { Button, Input, FormGroup, Label } from 'reactstrap';
 import { GenericModal } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
-import { Form, Formik } from 'formik';
+import { Form, Formik, useFormikContext } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
 import { FormikSelect, FormikCheck } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMakeNewSystem } from 'tapis-hooks/systems';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useMemo } from 'react';
 import styles from './CreateSystemModal.module.scss';
 import * as Yup from 'yup';
 import {
@@ -18,6 +18,7 @@ import {
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
 import AdvancedSettings from './AdvancedSettings';
+import { Systems } from '@tapis/tapis-typescript';
 
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
@@ -87,6 +88,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         128,
         'Batch Default Logical Queue should not be longer than 128 characters'
       ),
+      proxyHost: Yup.string()
+      .min(1)
+      .max(256, 'Proxy Host should not be longer than 256 characters'),
   });
 
   const initialValues = {
@@ -116,6 +120,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     maxMemoryMB: 16384,
     minMinutes: 1,
     maxMinutes: 60,
+    useProxy: false,
+    proxyHost: '',
+    proxyPort: 0,
   };
 
   const onSubmit = ({
@@ -145,6 +152,10 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     maxMemoryMB,
     minMinutes,
     maxMinutes,
+
+    useProxy,
+    proxyHost,
+    proxyPort,
   }: {
     sysname: string;
     description: string;
@@ -174,6 +185,10 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     maxMemoryMB: number;
     minMinutes: number;
     maxMinutes: number;
+
+    useProxy: boolean;
+    proxyHost: string;
+    proxyPort: number;
   }) => {
     //Converting the string into a boolean value
     const jobRuntimesArray = [{ runtimeType: jobRuntimes }];
@@ -193,7 +208,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         maxMinutes,
       },
     ];
-    console.log(canExec);
+
     //Creating the new system
     makeNewSystem(
       {
@@ -207,11 +222,16 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         jobWorkingDir,
         jobRuntimes: jobRuntimesArray,
         effectiveUserId,
+
         canRunBatch,
         batchScheduler,
         batchSchedulerProfile,
         batchDefaultLogicalQueue,
         batchLogicalQueues,
+
+        useProxy,
+        proxyHost,
+        proxyPort,
       },
       true,
       { onSuccess }
@@ -221,10 +241,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   return (
     <GenericModal
       toggle={toggle}
-      className={simplified ? styles['advanced-settings'] : styles['simplified-settings']}
       title="Create New System"
       body={
-        <div>
+        <div className={styles['modal-settings']}>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -287,13 +306,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     return <option>{values}</option>;
                   })}
                 </FormikSelect>
-                <FormikCheck
-                  name="canExec"
-                  required={true}
-                  label="Can Execute"
-                  description={'Decides if the system can execute'}
-                />
-                <AdvancedSettings simplified={simplified} />
+                {true ? 
+                  <FormikCheck
+                    name="canExec"
+                    required={true}
+                    label="Can Execute"
+                    description={'Decides if the system can execute'}
+                  />: null}
+                  
+                <AdvancedSettings simplified={simplified}/>
               </Form>
             )}
           </Formik>
