@@ -17,7 +17,7 @@ import {
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
-import AdvancedSettings from './AdvancedSettings';
+import AdvancedSettings from './Settings/AdvancedSettings';
 
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
