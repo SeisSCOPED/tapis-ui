@@ -9,6 +9,7 @@ import BatchSettings from './BatchSettings';
 import ProxySettings from './ProxySettings';
 import DtnSettings from './DtnSettings';
 
+//Array that is used in the drop-down menus
 const runtimeTypes = Object.values(RuntimeTypeEnum);
 
 type AdvancedSettingsProp = {
@@ -16,8 +17,10 @@ type AdvancedSettingsProp = {
 };
 
 const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
+  //used when trying to read the current value of a parameter
   const { values } = useFormikContext();
 
+  //reading if the systemType is S3 at its current state
   const isS3 = useMemo(
     () =>
       (values as Partial<Systems.ReqPostSystem>).systemType ===
@@ -25,6 +28,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
     [values]
   );
 
+  //reading the runtimeType at its current state
   const runtimeType = (values as Partial<Systems.ReqPostSystem>).jobRuntimes;
 
   if (simplified) {

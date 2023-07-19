@@ -8,15 +8,19 @@ import {
 import { useMemo } from 'react';
 import { Systems } from '@tapis/tapis-typescript';
 
+//Array that is used in the drop-down menus
 const schedulerTypes = Object.values(SchedulerTypeEnum);
 
 const BatchSettings: React.FC = () => {
+  //used when trying to read the current value of a parameter
   const { values } = useFormikContext();
 
+  //reading the canRunBatch at its current state
   const canRunBatch = useMemo(
     () => (values as Partial<Systems.ReqPostSystem>).canRunBatch,
     [values]
   );
+  //reading if the systemType is Linux at its current state
   const isLinux = useMemo(
     () =>
       (values as Partial<Systems.ReqPostSystem>).systemType ===

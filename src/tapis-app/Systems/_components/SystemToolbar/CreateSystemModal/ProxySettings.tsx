@@ -5,8 +5,10 @@ import { Systems } from '@tapis/tapis-typescript';
 import { useFormikContext } from 'formik';
 
 const ProxySettings: React.FC = () => {
+  //used when trying to read the current value of a parameter
   const { values } = useFormikContext();
 
+  //reading the useProxy at its current state
   const useProxy = useMemo(
     () => (values as Partial<Systems.ReqPostSystem>).useProxy,
     [values]

@@ -5,12 +5,15 @@ import { Systems } from '@tapis/tapis-typescript';
 import { useFormikContext } from 'formik';
 
 const DtnSettings: React.FC = () => {
+  //used when trying to read the current value of a parameter
   const { values } = useFormikContext();
 
+  //reading the isDtn at its current state
   const isDtn = useMemo(
     () => (values as Partial<Systems.ReqPostSystem>).isDtn,
     [values]
   );
+  //reading the canExec at its current state
   const canExec = useMemo(
     () => (values as Partial<Systems.ReqPostSystem>).canExec,
     [values]

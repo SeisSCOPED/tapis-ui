@@ -37,6 +37,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     reset();
   }, [reset]);
 
+  //used for the advanced checkbox
   const [simplified, setSimplified] = useState(false);
   const onChange = useCallback(() => {
     setSimplified(!simplified);
@@ -108,6 +109,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     effectiveUserId: '${apiUserId}',
     bucketName: '',
 
+    //batch
     canRunBatch: true,
     batchScheduler: SchedulerTypeEnum.Slurm,
     batchSchedulerProfile: 'tacc',
@@ -125,10 +127,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     minMinutes: 1,
     maxMinutes: 60,
 
+    //proxy
     useProxy: false,
     proxyHost: '',
     proxyPort: 0,
 
+    //dtn
     isDtn: false,
     dtnSystemId: '',
     dtnMountPoint: '',
@@ -148,6 +152,8 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     version,
     effectiveUserId,
     bucketName,
+
+    //batch
     canRunBatch,
     batchScheduler,
     batchSchedulerProfile,
@@ -165,10 +171,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     minMinutes,
     maxMinutes,
 
+    //proxy
     useProxy,
     proxyHost,
     proxyPort,
 
+    //dtn
     isDtn,
     dtnSystemId,
     dtnMountPoint,
@@ -205,10 +213,12 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     minMinutes: number;
     maxMinutes: number;
 
+    //proxy
     useProxy: boolean;
     proxyHost: string;
     proxyPort: number;
 
+    //dtn
     isDtn: boolean;
     dtnSystemId: string;
     dtnMountPoint: string;
@@ -233,6 +243,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       },
     ];
 
+    //These if statements were necessary as passing empty strings caused errors when proxy and dtn were set to false
     if (!useProxy && !isDtn) {
       makeNewSystem(
         {
