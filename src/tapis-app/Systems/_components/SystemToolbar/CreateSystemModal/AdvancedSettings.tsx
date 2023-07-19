@@ -1,9 +1,13 @@
-import { Form } from 'formik';
-import { FormikInput } from 'tapis-ui/_common';
+import { FormikInput, Collapse } from 'tapis-ui/_common';
 import { FormikSelect } from 'tapis-ui/_common/FieldWrapperFormik';
 import { RuntimeTypeEnum } from '@tapis/tapis-typescript-systems';
+import { Systems } from '@tapis/tapis-typescript';
+import { useMemo } from 'react';
+import { SystemTypeEnum } from '@tapis/tapis-typescript-systems';
+import { useFormikContext } from 'formik';
 import BatchSettings from './BatchSettings';
 import ProxySettings from './ProxySettings';
+import DtnSettings from './DtnSettings';
 
 const runtimeTypes = Object.values(RuntimeTypeEnum);
 
@@ -12,10 +16,20 @@ type AdvancedSettingsProp = {
 };
 
 const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
+  const { values } = useFormikContext();
+
+  const isS3 = useMemo(
+    () =>
+      (values as Partial<Systems.ReqPostSystem>).systemType ===
+      SystemTypeEnum.S3,
+    [values]
+  );
+
+  const runtimeType = (values as Partial<Systems.ReqPostSystem>).jobRuntimes;
+
   if (simplified) {
     return (
-      <Form style={{ paddingTop: '25px' }}>
-        Advanced Settings
+      <Collapse title="Advanced Settings">
         <FormikInput
           name="rootDir"
           label="Root Directory"
@@ -33,7 +47,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
         <FormikSelect
           name="jobRuntimes"
           description="The job runtime type for the system"
-          label="Job Runtimes"
+          label="Runtime Type"
           required={false}
           data-testid="jobRuntimes"
         >
@@ -45,15 +59,33 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
           })}
         </FormikSelect>
         <FormikInput
+          name="version"
+          label={`${runtimeType} Version`}
+          required={false}
+          description={`Version of ${runtimeType}`}
+          aria-label="Input"
+          disabled={true}
+        />
+        <FormikInput
           name="effectiveUserId"
           label="Effective User ID"
           required={false}
           description={`Effective user id`}
           aria-label="Input"
         />
+        {isS3 ? (
+          <FormikInput
+            name="bucketName"
+            label="Bucket Name"
+            required={false}
+            description={`Bucket name`}
+            aria-label="Input"
+          />
+        ) : null}
         <BatchSettings />
         <ProxySettings />
-      </Form>
+        <DtnSettings />
+      </Collapse>
     );
   } else {
     return null;

@@ -11,7 +11,6 @@ const ProxySettings: React.FC = () => {
     () => (values as Partial<Systems.ReqPostSystem>).useProxy,
     [values]
   );
-  console.log(useProxy);
 
   return (
     <div>

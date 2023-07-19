@@ -2,11 +2,11 @@ import { Button, Input, FormGroup, Label } from 'reactstrap';
 import { GenericModal } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { ToolbarModalProps } from '../SystemToolbar';
-import { Form, Formik, useFormikContext } from 'formik';
+import { Form, Formik } from 'formik';
 import { FormikInput } from 'tapis-ui/_common';
 import { FormikSelect, FormikCheck } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMakeNewSystem } from 'tapis-hooks/systems';
-import { useEffect, useCallback, useState, useMemo } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import styles from './CreateSystemModal.module.scss';
 import * as Yup from 'yup';
 import {
@@ -18,7 +18,6 @@ import {
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
 import AdvancedSettings from './AdvancedSettings';
-import { Systems } from '@tapis/tapis-typescript';
 
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
@@ -73,24 +72,26 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         4096,
         'Job Working Directory should not be longer than 4096 characters'
       ),
-    effectiveUserId: Yup.string()
-      .min(1)
-      .max(60, 'Effective User ID should not be longer than 60 characters'),
-    batchSchedulerProfile: Yup.string()
-      .min(1)
-      .max(
-        80,
-        'Batch Scheduler Profile should not be longer than 80 characters'
-      ),
-    batchDefaultLogicalQueue: Yup.string()
-      .min(1)
-      .max(
-        128,
-        'Batch Default Logical Queue should not be longer than 128 characters'
-      ),
-    proxyHost: Yup.string()
-      .min(1)
-      .max(256, 'Proxy Host should not be longer than 256 characters'),
+    effectiveUserId: Yup.string().max(
+      60,
+      'Effective User ID should not be longer than 60 characters'
+    ),
+    batchSchedulerProfile: Yup.string().max(
+      80,
+      'Batch Scheduler Profile should not be longer than 80 characters'
+    ),
+    batchDefaultLogicalQueue: Yup.string().max(
+      128,
+      'Batch Default Logical Queue should not be longer than 128 characters'
+    ),
+    proxyHost: Yup.string().max(
+      256,
+      'Proxy Host should not be longer than 256 characters'
+    ),
+    dtnSystemId: Yup.string().max(
+      80,
+      'DTN System ID should not be longer than 80 characters'
+    ),
   });
 
   const initialValues = {
@@ -103,7 +104,10 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: RuntimeTypeEnum.Singularity,
+    version: '',
     effectiveUserId: '${apiUserId}',
+    bucketName: '',
+
     canRunBatch: true,
     batchScheduler: SchedulerTypeEnum.Slurm,
     batchSchedulerProfile: 'tacc',
@@ -120,9 +124,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     maxMemoryMB: 16384,
     minMinutes: 1,
     maxMinutes: 60,
+
     useProxy: false,
     proxyHost: '',
     proxyPort: 0,
+
+    isDtn: false,
+    dtnSystemId: '',
+    dtnMountPoint: '',
+    dtnMountSourcePath: '',
   };
 
   const onSubmit = ({
@@ -135,7 +145,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir,
     jobWorkingDir,
     jobRuntimes,
+    version,
     effectiveUserId,
+    bucketName,
     canRunBatch,
     batchScheduler,
     batchSchedulerProfile,
@@ -156,6 +168,11 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     useProxy,
     proxyHost,
     proxyPort,
+
+    isDtn,
+    dtnSystemId,
+    dtnMountPoint,
+    dtnMountSourcePath,
   }: {
     sysname: string;
     description: string;
@@ -166,7 +183,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: RuntimeTypeEnum;
+    version: string;
     effectiveUserId: string;
+    bucketName: string;
     canRunBatch: boolean;
     batchScheduler: SchedulerTypeEnum;
     batchSchedulerProfile: string;
@@ -189,9 +208,14 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     useProxy: boolean;
     proxyHost: string;
     proxyPort: number;
+
+    isDtn: boolean;
+    dtnSystemId: string;
+    dtnMountPoint: string;
+    dtnMountSourcePath: string;
   }) => {
     //Converting the string into a boolean value
-    const jobRuntimesArray = [{ runtimeType: jobRuntimes }];
+    const jobRuntimesArray = [{ runtimeType: jobRuntimes, version }];
     const batchLogicalQueues = [
       {
         name: batchLogicalQueuesName,
@@ -209,33 +233,122 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       },
     ];
 
-    //Creating the new system
-    makeNewSystem(
-      {
-        id: sysname,
-        description,
-        systemType,
-        host,
-        defaultAuthnMethod,
-        canExec,
-        rootDir,
-        jobWorkingDir,
-        jobRuntimes: jobRuntimesArray,
-        effectiveUserId,
+    if (!useProxy && !isDtn) {
+      makeNewSystem(
+        {
+          id: sysname,
+          description,
+          systemType,
+          host,
+          defaultAuthnMethod,
+          canExec,
+          rootDir,
+          jobWorkingDir,
+          jobRuntimes: jobRuntimesArray,
+          effectiveUserId,
+          bucketName,
 
-        canRunBatch,
-        batchScheduler,
-        batchSchedulerProfile,
-        batchDefaultLogicalQueue,
-        batchLogicalQueues,
+          canRunBatch,
+          batchScheduler,
+          batchSchedulerProfile,
+          batchDefaultLogicalQueue,
+          batchLogicalQueues,
+        },
+        true,
+        { onSuccess }
+      );
+    } else if (!isDtn) {
+      makeNewSystem(
+        {
+          id: sysname,
+          description,
+          systemType,
+          host,
+          defaultAuthnMethod,
+          canExec,
+          rootDir,
+          jobWorkingDir,
+          jobRuntimes: jobRuntimesArray,
+          effectiveUserId,
+          bucketName,
 
-        useProxy,
-        proxyHost,
-        proxyPort,
-      },
-      true,
-      { onSuccess }
-    );
+          canRunBatch,
+          batchScheduler,
+          batchSchedulerProfile,
+          batchDefaultLogicalQueue,
+          batchLogicalQueues,
+
+          useProxy,
+          proxyHost,
+          proxyPort,
+        },
+        true,
+        { onSuccess }
+      );
+    } else if (!useProxy) {
+      makeNewSystem(
+        {
+          id: sysname,
+          description,
+          systemType,
+          host,
+          defaultAuthnMethod,
+          canExec,
+          rootDir,
+          jobWorkingDir,
+          jobRuntimes: jobRuntimesArray,
+          effectiveUserId,
+          bucketName,
+
+          canRunBatch,
+          batchScheduler,
+          batchSchedulerProfile,
+          batchDefaultLogicalQueue,
+          batchLogicalQueues,
+
+          isDtn,
+          dtnSystemId,
+          dtnMountPoint,
+          dtnMountSourcePath,
+        },
+        true,
+        { onSuccess }
+      );
+    } else {
+      //Creating the new system
+      makeNewSystem(
+        {
+          id: sysname,
+          description,
+          systemType,
+          host,
+          defaultAuthnMethod,
+          canExec,
+          rootDir,
+          jobWorkingDir,
+          jobRuntimes: jobRuntimesArray,
+          effectiveUserId,
+          bucketName,
+
+          canRunBatch,
+          batchScheduler,
+          batchSchedulerProfile,
+          batchDefaultLogicalQueue,
+          batchLogicalQueues,
+
+          useProxy,
+          proxyHost,
+          proxyPort,
+
+          isDtn,
+          dtnSystemId,
+          dtnMountPoint,
+          dtnMountSourcePath,
+        },
+        true,
+        { onSuccess }
+      );
+    }
   };
 
   return (
