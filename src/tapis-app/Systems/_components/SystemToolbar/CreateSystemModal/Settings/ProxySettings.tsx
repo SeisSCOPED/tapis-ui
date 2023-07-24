@@ -3,6 +3,7 @@ import { FormikCheck } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMemo } from 'react';
 import { Systems } from '@tapis/tapis-typescript';
 import { useFormikContext } from 'formik';
+import styles from '../CreateSystemModal.module.scss';
 
 const ProxySettings: React.FC = () => {
   //used when trying to read the current value of a parameter
@@ -15,34 +16,32 @@ const ProxySettings: React.FC = () => {
   );
 
   return (
-    <div>
-      <Collapse title="Proxy Settings">
-        <FormikCheck
-          name="useProxy"
-          required={false}
-          label="Use Proxy"
-          description={'Decides if the system can use proxy'}
-        />
-        {useProxy ? (
-          <div>
-            <FormikInput
-              name="proxyHost"
-              label="Proxy Host"
-              required={false}
-              description={`Host of the proxy`}
-              aria-label="Input"
-            />
-            <FormikInput
-              name="proxyPort"
-              label="Proxy Port"
-              required={false}
-              description={`Port of the proxy`}
-              aria-label="Input"
-            />
-          </div>
-        ) : null}
-      </Collapse>
-    </div>
+    <Collapse title="Proxy Settings" className={styles['array']}>
+      <FormikCheck
+        name="useProxy"
+        required={false}
+        label="Use Proxy"
+        description={'Decides if the system can use proxy'}
+      />
+      {useProxy ? (
+        <div>
+          <FormikInput
+            name="proxyHost"
+            label="Proxy Host"
+            required={false}
+            description={`Host of the proxy`}
+            aria-label="Input"
+          />
+          <FormikInput
+            name="proxyPort"
+            label="Proxy Port"
+            required={false}
+            description={`Port of the proxy`}
+            aria-label="Input"
+          />
+        </div>
+      ) : null}
+    </Collapse>
   );
 };
 

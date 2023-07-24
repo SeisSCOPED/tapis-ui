@@ -14,6 +14,10 @@ import {
   AuthnEnum,
   RuntimeTypeEnum,
   SchedulerTypeEnum,
+  CategoryEnum,
+  DatatypeEnum,
+  LogicalQueue,
+  Capability,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
@@ -93,11 +97,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       80,
       'DTN System ID should not be longer than 80 characters'
     ),
+    mpiCmd: Yup.string().max(
+      126,
+      'mpiCmd should not be longer than 126 characters'
+    ),
   });
 
   const initialValues = {
     sysname: '',
-    description: '',
+    description: undefined,
     systemType: SystemTypeEnum.Linux,
     host: 'stampede2.tacc.utexas.edu',
     defaultAuthnMethod: AuthnEnum.Password,
@@ -105,38 +113,51 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: RuntimeTypeEnum.Singularity,
-    version: '',
+    version: undefined,
     effectiveUserId: '${apiUserId}',
-    bucketName: '',
+    bucketName: undefined,
 
     //batch
     canRunBatch: true,
     batchScheduler: SchedulerTypeEnum.Slurm,
     batchSchedulerProfile: 'tacc',
     batchDefaultLogicalQueue: 'tapisNormal',
-    batchLogicalQueuesName: 'tapisNormal',
-    hpcQueueName: 'normal',
-    maxJobs: 50,
-    maxJobsPerUser: 10,
-    minNodeCount: 1,
-    maxNodeCount: 16,
-    minCoresPerNode: 1,
-    maxCoresPerNode: 68,
-    minMemoryMB: 1,
-    maxMemoryMB: 16384,
-    minMinutes: 1,
-    maxMinutes: 60,
+
+    batchLogicalQueues: [
+      {
+        name: 'tapisNormal',
+        hpcQueueName: 'normal',
+        maxJobs: 50,
+        maxJobsPerUser: 10,
+        minNodeCount: 1,
+        maxNodeCount: 16,
+        minCoresPerNode: 1,
+        maxCoresPerNode: 68,
+        minMemoryMB: 1,
+        maxMemoryMB: 16384,
+        minMinutes: 1,
+        maxMinutes: 60,
+      },
+    ],
 
     //proxy
     useProxy: false,
-    proxyHost: '',
+    proxyHost: undefined,
     proxyPort: 0,
 
     //dtn
     isDtn: false,
-    dtnSystemId: '',
-    dtnMountPoint: '',
-    dtnMountSourcePath: '',
+    dtnSystemId: undefined,
+    dtnMountPoint: undefined,
+    dtnMountSourcePath: undefined,
+
+    //cmd
+    enableCmdPrefix: false,
+    mpiCmd: undefined,
+
+    jobCapabilities: [],
+
+    tags: [],
   };
 
   const onSubmit = ({
@@ -158,18 +179,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     batchScheduler,
     batchSchedulerProfile,
     batchDefaultLogicalQueue,
-    batchLogicalQueuesName,
-    hpcQueueName,
-    maxJobs,
-    maxJobsPerUser,
-    minNodeCount,
-    maxNodeCount,
-    minCoresPerNode,
-    maxCoresPerNode,
-    minMemoryMB,
-    maxMemoryMB,
-    minMinutes,
-    maxMinutes,
+    batchLogicalQueues,
 
     //proxy
     useProxy,
@@ -181,9 +191,17 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     dtnSystemId,
     dtnMountPoint,
     dtnMountSourcePath,
+
+    //cmd
+    enableCmdPrefix,
+    mpiCmd,
+
+    jobCapabilities,
+
+    tags,
   }: {
     sysname: string;
-    description: string;
+    description: undefined;
     systemType: SystemTypeEnum;
     host: string;
     defaultAuthnMethod: AuthnEnum;
@@ -191,175 +209,82 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: RuntimeTypeEnum;
-    version: string;
+    version: undefined;
     effectiveUserId: string;
-    bucketName: string;
+    bucketName: undefined;
+
+    //batch
     canRunBatch: boolean;
     batchScheduler: SchedulerTypeEnum;
     batchSchedulerProfile: string;
     batchDefaultLogicalQueue: string;
-
-    //batchLogicalQueues
-    batchLogicalQueuesName: string;
-    hpcQueueName: string;
-    maxJobs: number;
-    maxJobsPerUser: number;
-    minNodeCount: number;
-    maxNodeCount: number;
-    minCoresPerNode: number;
-    maxCoresPerNode: number;
-    minMemoryMB: number;
-    maxMemoryMB: number;
-    minMinutes: number;
-    maxMinutes: number;
+    batchLogicalQueues: Array<LogicalQueue>;
 
     //proxy
     useProxy: boolean;
-    proxyHost: string;
+    proxyHost: undefined;
     proxyPort: number;
 
     //dtn
     isDtn: boolean;
-    dtnSystemId: string;
-    dtnMountPoint: string;
-    dtnMountSourcePath: string;
+    dtnSystemId: undefined;
+    dtnMountPoint: undefined;
+    dtnMountSourcePath: undefined;
+
+    //cmd
+    enableCmdPrefix: boolean;
+    mpiCmd: undefined;
+
+    jobCapabilities: Array<Capability>;
+
+    tags: Array<string>;
   }) => {
     //Converting the string into a boolean value
     const jobRuntimesArray = [{ runtimeType: jobRuntimes, version }];
-    const batchLogicalQueues = [
+
+    makeNewSystem(
       {
-        name: batchLogicalQueuesName,
-        hpcQueueName,
-        maxJobs,
-        maxJobsPerUser,
-        minNodeCount,
-        maxNodeCount,
-        minCoresPerNode,
-        maxCoresPerNode,
-        minMemoryMB,
-        maxMemoryMB,
-        minMinutes,
-        maxMinutes,
+        id: sysname,
+        description,
+        systemType,
+        host,
+        defaultAuthnMethod,
+        canExec,
+        rootDir,
+        jobWorkingDir,
+        jobRuntimes: jobRuntimesArray,
+        effectiveUserId,
+        bucketName,
+
+        //batch
+        canRunBatch,
+        batchScheduler,
+        batchSchedulerProfile,
+        batchDefaultLogicalQueue,
+        batchLogicalQueues,
+
+        //proxy
+        useProxy,
+        proxyHost,
+        proxyPort,
+
+        //dtn
+        isDtn,
+        dtnSystemId,
+        dtnMountPoint,
+        dtnMountSourcePath,
+
+        //cmd
+        enableCmdPrefix,
+        mpiCmd,
+
+        jobCapabilities,
+
+        tags,
       },
-    ];
-
-    //These if statements were necessary as passing empty strings caused errors when proxy and dtn were set to false
-    if (!useProxy && !isDtn) {
-      makeNewSystem(
-        {
-          id: sysname,
-          description,
-          systemType,
-          host,
-          defaultAuthnMethod,
-          canExec,
-          rootDir,
-          jobWorkingDir,
-          jobRuntimes: jobRuntimesArray,
-          effectiveUserId,
-          bucketName,
-
-          canRunBatch,
-          batchScheduler,
-          batchSchedulerProfile,
-          batchDefaultLogicalQueue,
-          batchLogicalQueues,
-        },
-        true,
-        { onSuccess }
-      );
-    } else if (!isDtn) {
-      makeNewSystem(
-        {
-          id: sysname,
-          description,
-          systemType,
-          host,
-          defaultAuthnMethod,
-          canExec,
-          rootDir,
-          jobWorkingDir,
-          jobRuntimes: jobRuntimesArray,
-          effectiveUserId,
-          bucketName,
-
-          canRunBatch,
-          batchScheduler,
-          batchSchedulerProfile,
-          batchDefaultLogicalQueue,
-          batchLogicalQueues,
-
-          useProxy,
-          proxyHost,
-          proxyPort,
-        },
-        true,
-        { onSuccess }
-      );
-    } else if (!useProxy) {
-      makeNewSystem(
-        {
-          id: sysname,
-          description,
-          systemType,
-          host,
-          defaultAuthnMethod,
-          canExec,
-          rootDir,
-          jobWorkingDir,
-          jobRuntimes: jobRuntimesArray,
-          effectiveUserId,
-          bucketName,
-
-          canRunBatch,
-          batchScheduler,
-          batchSchedulerProfile,
-          batchDefaultLogicalQueue,
-          batchLogicalQueues,
-
-          isDtn,
-          dtnSystemId,
-          dtnMountPoint,
-          dtnMountSourcePath,
-        },
-        true,
-        { onSuccess }
-      );
-    } else {
-      //Creating the new system
-      makeNewSystem(
-        {
-          id: sysname,
-          description,
-          systemType,
-          host,
-          defaultAuthnMethod,
-          canExec,
-          rootDir,
-          jobWorkingDir,
-          jobRuntimes: jobRuntimesArray,
-          effectiveUserId,
-          bucketName,
-
-          canRunBatch,
-          batchScheduler,
-          batchSchedulerProfile,
-          batchDefaultLogicalQueue,
-          batchLogicalQueues,
-
-          useProxy,
-          proxyHost,
-          proxyPort,
-
-          isDtn,
-          dtnSystemId,
-          dtnMountPoint,
-          dtnMountSourcePath,
-        },
-        true,
-        { onSuccess }
-      );
-    }
+      true,
+      { onSuccess }
+    );
   };
 
   return (

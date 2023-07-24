@@ -5,8 +5,10 @@ import {
   SchedulerTypeEnum,
   SystemTypeEnum,
 } from '@tapis/tapis-typescript-systems';
+import styles from '../CreateSystemModal.module.scss';
 import { useMemo } from 'react';
 import { Systems } from '@tapis/tapis-typescript';
+import BatchLogicalQueuesSettings from './BatchLogicalQueuesSettings';
 
 //Array that is used in the drop-down menus
 const schedulerTypes = Object.values(SchedulerTypeEnum);
@@ -31,7 +33,7 @@ const BatchSettings: React.FC = () => {
   return (
     <div>
       {isLinux ? (
-        <Collapse title="Batch Settings">
+        <Collapse title="Batch Settings" className={styles['array']}>
           <FormikCheck
             name="canRunBatch"
             required={false}
@@ -68,92 +70,7 @@ const BatchSettings: React.FC = () => {
                 description={`Batch default logical queue`}
                 aria-label="Input"
               />
-              <Collapse title="Batch Logical Queue Settings">
-                <FormikInput
-                  name="batchLogicalQueuesName"
-                  label="Name"
-                  required={true}
-                  description={`Name`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="hpcQueueName"
-                  label="HPC Queue Name"
-                  required={true}
-                  description={`HPC queue name`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxJobs"
-                  label="Max Jobs"
-                  required={false}
-                  description={`Maximum number of jobs`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxJobsPerUser"
-                  label="Max Jobs Per User"
-                  required={false}
-                  description={`Maximum number of jobs per user`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="minNodeCount"
-                  label="Min Node Count"
-                  required={false}
-                  description={`Minimum number of nodes`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxNodeCount"
-                  label="Max Node Count"
-                  required={false}
-                  description={`Maximum number of nodes`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="minCoresPerNode"
-                  label="Min Cores Per Node"
-                  required={false}
-                  description={`Minimum number of cores per node`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxCoresPerNode"
-                  label="Max Cores Per Node"
-                  required={false}
-                  description={`Maximum number of cores per node`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="minMemoryMB"
-                  label="Min Memory MB"
-                  required={false}
-                  description={`Minimum memory in MB`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxMemoryMB"
-                  label="Max Memory MB"
-                  required={false}
-                  description={`Maximum memory in MB`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="minMinutes"
-                  label="Min Minutes"
-                  required={false}
-                  description={`Minimum number of minutes`}
-                  aria-label="Input"
-                />
-                <FormikInput
-                  name="maxMinutes"
-                  label="Max Minutes"
-                  required={false}
-                  description={`Maximum number of minutes`}
-                  aria-label="Input"
-                />
-              </Collapse>
+              <BatchLogicalQueuesSettings />
             </div>
           ) : null}
         </Collapse>

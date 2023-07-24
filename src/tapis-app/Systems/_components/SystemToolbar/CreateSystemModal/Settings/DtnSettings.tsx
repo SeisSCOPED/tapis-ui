@@ -3,6 +3,7 @@ import { FormikCheck } from 'tapis-ui/_common/FieldWrapperFormik';
 import { useMemo } from 'react';
 import { Systems } from '@tapis/tapis-typescript';
 import { useFormikContext } from 'formik';
+import styles from '../CreateSystemModal.module.scss';
 
 const DtnSettings: React.FC = () => {
   //used when trying to read the current value of a parameter
@@ -22,7 +23,7 @@ const DtnSettings: React.FC = () => {
   return (
     <div>
       {!canExec ? (
-        <Collapse title="DTN Settings">
+        <Collapse title="DTN Settings" className={styles['array']}>
           <FormikCheck
             name="isDtn"
             required={false}
