@@ -9,7 +9,11 @@ type BatchLQFieldProps = {
   index: number;
   remove: (index: number) => Systems.ReqPostSystem | undefined;
 };
-const BatchLogicalQueuesField: React.FC<BatchLQFieldProps> = ({ item, index, remove }) => {
+const BatchLogicalQueuesField: React.FC<BatchLQFieldProps> = ({
+  item,
+  index,
+  remove,
+}) => {
   return (
     <>
       <Collapse
@@ -119,9 +123,9 @@ const BatchLogicalQueuesField: React.FC<BatchLQFieldProps> = ({ item, index, rem
   );
 };
 
-const BatchLogicalQueuesInputs: React.FC<{ arrayHelpers: FieldArrayRenderProps }> = ({
-  arrayHelpers,
-}) => {
+const BatchLogicalQueuesInputs: React.FC<{
+  arrayHelpers: FieldArrayRenderProps;
+}> = ({ arrayHelpers }) => {
   const { values } = useFormikContext();
 
   const batchLogicalQueues =
