@@ -1,12 +1,16 @@
-.advanced-settings {
-  padding-top: 50rem;
-  min-width: 40rem;
-  size: auto;
-  overflow: auto;
-  overflow-anchor: none;
+.modal-settings {
+  max-height: 38rem;
+  overflow-y: scroll;
 }
 
-.simplified-settings {
-  min-width: 40rem;
-  size: auto;
+.item {
+  border: 1px dotted lightgray;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin-bottom: 1em;
+}
+
+.array {
+  border: 1px solid gray;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin-bottom: 0.5em;
 }

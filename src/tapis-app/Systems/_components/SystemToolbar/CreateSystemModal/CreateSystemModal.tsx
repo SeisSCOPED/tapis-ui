@@ -14,10 +14,14 @@ import {
   AuthnEnum,
   RuntimeTypeEnum,
   SchedulerTypeEnum,
+  CategoryEnum,
+  DatatypeEnum,
+  LogicalQueue,
+  Capability,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
-import AdvancedSettings from './AdvancedSettings';
+import AdvancedSettings from './Settings/AdvancedSettings';
 
 //Arrays that are used in the drop-down menus
 const systemTypes = Object.values(SystemTypeEnum);
@@ -37,6 +41,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     reset();
   }, [reset]);
 
+  //used for the advanced checkbox
   const [simplified, setSimplified] = useState(false);
   const onChange = useCallback(() => {
     setSimplified(!simplified);
@@ -72,26 +77,35 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         4096,
         'Job Working Directory should not be longer than 4096 characters'
       ),
-    effectiveUserId: Yup.string()
-      .min(1)
-      .max(60, 'Effective User ID should not be longer than 60 characters'),
-    batchSchedulerProfile: Yup.string()
-      .min(1)
-      .max(
-        80,
-        'Batch Scheduler Profile should not be longer than 80 characters'
-      ),
-    batchDefaultLogicalQueue: Yup.string()
-      .min(1)
-      .max(
-        128,
-        'Batch Default Logical Queue should not be longer than 128 characters'
-      ),
+    effectiveUserId: Yup.string().max(
+      60,
+      'Effective User ID should not be longer than 60 characters'
+    ),
+    batchSchedulerProfile: Yup.string().max(
+      80,
+      'Batch Scheduler Profile should not be longer than 80 characters'
+    ),
+    batchDefaultLogicalQueue: Yup.string().max(
+      128,
+      'Batch Default Logical Queue should not be longer than 128 characters'
+    ),
+    proxyHost: Yup.string().max(
+      256,
+      'Proxy Host should not be longer than 256 characters'
+    ),
+    dtnSystemId: Yup.string().max(
+      80,
+      'DTN System ID should not be longer than 80 characters'
+    ),
+    mpiCmd: Yup.string().max(
+      126,
+      'mpiCmd should not be longer than 126 characters'
+    ),
   });
 
   const initialValues = {
     sysname: '',
-    description: '',
+    description: undefined,
     systemType: SystemTypeEnum.Linux,
     host: 'stampede2.tacc.utexas.edu',
     defaultAuthnMethod: AuthnEnum.Password,
@@ -99,23 +113,51 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: RuntimeTypeEnum.Singularity,
+    version: undefined,
     effectiveUserId: '${apiUserId}',
+    bucketName: undefined,
+
+    //batch
     canRunBatch: true,
     batchScheduler: SchedulerTypeEnum.Slurm,
     batchSchedulerProfile: 'tacc',
     batchDefaultLogicalQueue: 'tapisNormal',
-    batchLogicalQueuesName: 'tapisNormal',
-    hpcQueueName: 'normal',
-    maxJobs: 50,
-    maxJobsPerUser: 10,
-    minNodeCount: 1,
-    maxNodeCount: 16,
-    minCoresPerNode: 1,
-    maxCoresPerNode: 68,
-    minMemoryMB: 1,
-    maxMemoryMB: 16384,
-    minMinutes: 1,
-    maxMinutes: 60,
+
+    batchLogicalQueues: [
+      {
+        name: 'tapisNormal',
+        hpcQueueName: 'normal',
+        maxJobs: 50,
+        maxJobsPerUser: 10,
+        minNodeCount: 1,
+        maxNodeCount: 16,
+        minCoresPerNode: 1,
+        maxCoresPerNode: 68,
+        minMemoryMB: 1,
+        maxMemoryMB: 16384,
+        minMinutes: 1,
+        maxMinutes: 60,
+      },
+    ],
+
+    //proxy
+    useProxy: false,
+    proxyHost: undefined,
+    proxyPort: 0,
+
+    //dtn
+    isDtn: false,
+    dtnSystemId: undefined,
+    dtnMountPoint: undefined,
+    dtnMountSourcePath: undefined,
+
+    //cmd
+    enableCmdPrefix: false,
+    mpiCmd: undefined,
+
+    jobCapabilities: [],
+
+    tags: [],
   };
 
   const onSubmit = ({
@@ -128,26 +170,38 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir,
     jobWorkingDir,
     jobRuntimes,
+    version,
     effectiveUserId,
+    bucketName,
+
+    //batch
     canRunBatch,
     batchScheduler,
     batchSchedulerProfile,
     batchDefaultLogicalQueue,
-    batchLogicalQueuesName,
-    hpcQueueName,
-    maxJobs,
-    maxJobsPerUser,
-    minNodeCount,
-    maxNodeCount,
-    minCoresPerNode,
-    maxCoresPerNode,
-    minMemoryMB,
-    maxMemoryMB,
-    minMinutes,
-    maxMinutes,
+    batchLogicalQueues,
+
+    //proxy
+    useProxy,
+    proxyHost,
+    proxyPort,
+
+    //dtn
+    isDtn,
+    dtnSystemId,
+    dtnMountPoint,
+    dtnMountSourcePath,
+
+    //cmd
+    enableCmdPrefix,
+    mpiCmd,
+
+    jobCapabilities,
+
+    tags,
   }: {
     sysname: string;
-    description: string;
+    description: undefined;
     systemType: SystemTypeEnum;
     host: string;
     defaultAuthnMethod: AuthnEnum;
@@ -155,46 +209,39 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: RuntimeTypeEnum;
+    version: undefined;
     effectiveUserId: string;
+    bucketName: undefined;
+
+    //batch
     canRunBatch: boolean;
     batchScheduler: SchedulerTypeEnum;
     batchSchedulerProfile: string;
     batchDefaultLogicalQueue: string;
+    batchLogicalQueues: Array<LogicalQueue>;
 
-    //batchLogicalQueues
-    batchLogicalQueuesName: string;
-    hpcQueueName: string;
-    maxJobs: number;
-    maxJobsPerUser: number;
-    minNodeCount: number;
-    maxNodeCount: number;
-    minCoresPerNode: number;
-    maxCoresPerNode: number;
-    minMemoryMB: number;
-    maxMemoryMB: number;
-    minMinutes: number;
-    maxMinutes: number;
+    //proxy
+    useProxy: boolean;
+    proxyHost: undefined;
+    proxyPort: number;
+
+    //dtn
+    isDtn: boolean;
+    dtnSystemId: undefined;
+    dtnMountPoint: undefined;
+    dtnMountSourcePath: undefined;
+
+    //cmd
+    enableCmdPrefix: boolean;
+    mpiCmd: undefined;
+
+    jobCapabilities: Array<Capability>;
+
+    tags: Array<string>;
   }) => {
     //Converting the string into a boolean value
-    const jobRuntimesArray = [{ runtimeType: jobRuntimes }];
-    const batchLogicalQueues = [
-      {
-        name: batchLogicalQueuesName,
-        hpcQueueName,
-        maxJobs,
-        maxJobsPerUser,
-        minNodeCount,
-        maxNodeCount,
-        minCoresPerNode,
-        maxCoresPerNode,
-        minMemoryMB,
-        maxMemoryMB,
-        minMinutes,
-        maxMinutes,
-      },
-    ];
-    console.log(canExec);
-    //Creating the new system
+    const jobRuntimesArray = [{ runtimeType: jobRuntimes, version }];
+
     makeNewSystem(
       {
         id: sysname,
@@ -207,11 +254,33 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         jobWorkingDir,
         jobRuntimes: jobRuntimesArray,
         effectiveUserId,
+        bucketName,
+
+        //batch
         canRunBatch,
         batchScheduler,
         batchSchedulerProfile,
         batchDefaultLogicalQueue,
         batchLogicalQueues,
+
+        //proxy
+        useProxy,
+        proxyHost,
+        proxyPort,
+
+        //dtn
+        isDtn,
+        dtnSystemId,
+        dtnMountPoint,
+        dtnMountSourcePath,
+
+        //cmd
+        enableCmdPrefix,
+        mpiCmd,
+
+        jobCapabilities,
+
+        tags,
       },
       true,
       { onSuccess }
@@ -221,10 +290,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   return (
     <GenericModal
       toggle={toggle}
-      className={simplified ? styles['advanced-settings'] : styles['simplified-settings']}
       title="Create New System"
       body={
-        <div>
+        <div className={styles['modal-settings']}>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -287,12 +355,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     return <option>{values}</option>;
                   })}
                 </FormikSelect>
-                <FormikCheck
-                  name="canExec"
-                  required={true}
-                  label="Can Execute"
-                  description={'Decides if the system can execute'}
-                />
+                {true ? (
+                  <FormikCheck
+                    name="canExec"
+                    required={true}
+                    label="Can Execute"
+                    description={'Decides if the system can execute'}
+                  />
+                ) : null}
+
                 <AdvancedSettings simplified={simplified} />
               </Form>
             )}
