@@ -240,7 +240,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     enableCmdPrefix: boolean;
     mpiCmd: string | undefined;
 
-    jobMaxJobs: number | undefined,
+    jobMaxJobs: number | undefined;
     jobMaxJobsPerUser: number | undefined;
     jobCapabilities: Array<Capability>;
     jobEnvVariables: Array<KeyValuePair>;
