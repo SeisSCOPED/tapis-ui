@@ -14,7 +14,7 @@ const TagsField: React.FC<TagsFieldProps> = ({ item, index, remove }) => {
     <>
       <Collapse open={!item} title={`Tag`} className={styles['item']}>
         <FormikInput
-          name={`tags.${index}`}
+          name={`tags[${index}]`}
           label="Tag"
           required={true}
           description="Tag for the system"
@@ -43,7 +43,7 @@ const TagsInputs: React.FC<{ arrayHelpers: FieldArrayRenderProps }> = ({
     >
       {tags.map((tagInput, index) => (
         <TagsField
-          key={`tags.${index}`}
+          key={`tags[${index}]`}
           item={tagInput}
           index={index}
           remove={arrayHelpers.remove}
