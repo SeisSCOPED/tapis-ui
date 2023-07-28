@@ -35,6 +35,7 @@ const ProxySettings: React.FC = () => {
           <FormikInput
             name="proxyPort"
             label="Proxy Port"
+            type='number'
             required={false}
             description={`Port of the proxy`}
             aria-label="Input"

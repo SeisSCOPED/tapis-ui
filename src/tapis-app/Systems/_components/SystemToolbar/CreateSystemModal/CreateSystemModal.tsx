@@ -14,10 +14,9 @@ import {
   AuthnEnum,
   RuntimeTypeEnum,
   SchedulerTypeEnum,
-  CategoryEnum,
-  DatatypeEnum,
   LogicalQueue,
   Capability,
+  KeyValuePair,
 } from '@tapis/tapis-typescript-systems';
 import { useQueryClient } from 'react-query';
 import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
@@ -111,7 +110,6 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     defaultAuthnMethod: AuthnEnum.Password,
     canExec: true,
     rootDir: '/',
-    jobWorkingDir: 'HOST_EVAL($SCRATCH)',
     jobRuntimes: RuntimeTypeEnum.Singularity,
     version: undefined,
     effectiveUserId: '${apiUserId}',
@@ -155,7 +153,11 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     enableCmdPrefix: false,
     mpiCmd: undefined,
 
+    jobWorkingDir: 'HOST_EVAL($SCRATCH)',
+    jobMaxJobs: undefined,
+    jobMaxJobsPerUser: undefined,
     jobCapabilities: [],
+    jobEnvVariables: [],
 
     tags: [],
   };
@@ -196,12 +198,15 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     enableCmdPrefix,
     mpiCmd,
 
+    jobMaxJobs,
+    jobMaxJobsPerUser,
     jobCapabilities,
+    jobEnvVariables,
 
     tags,
   }: {
     sysname: string;
-    description: undefined;
+    description: string | undefined;
     systemType: SystemTypeEnum;
     host: string;
     defaultAuthnMethod: AuthnEnum;
@@ -209,9 +214,9 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: string;
     jobWorkingDir: string;
     jobRuntimes: RuntimeTypeEnum;
-    version: undefined;
+    version: string | undefined;
     effectiveUserId: string;
-    bucketName: undefined;
+    bucketName: string | undefined;
 
     //batch
     canRunBatch: boolean;
@@ -222,22 +227,25 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
 
     //proxy
     useProxy: boolean;
-    proxyHost: undefined;
+    proxyHost: string | undefined;
     proxyPort: number;
 
     //dtn
     isDtn: boolean;
-    dtnSystemId: undefined;
-    dtnMountPoint: undefined;
-    dtnMountSourcePath: undefined;
+    dtnSystemId: string | undefined;
+    dtnMountPoint: string | undefined;
+    dtnMountSourcePath: string | undefined;
 
     //cmd
     enableCmdPrefix: boolean;
-    mpiCmd: undefined;
+    mpiCmd: string | undefined;
 
+    jobMaxJobs: number | undefined,
+    jobMaxJobsPerUser: number | undefined;
     jobCapabilities: Array<Capability>;
+    jobEnvVariables: Array<KeyValuePair>;
 
-    tags: Array<string>;
+    tags: Array<string> | undefined;
   }) => {
     //Converting the string into a boolean value
     const jobRuntimesArray = [{ runtimeType: jobRuntimes, version }];
@@ -278,7 +286,10 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
         enableCmdPrefix,
         mpiCmd,
 
+        jobMaxJobs,
+        jobMaxJobsPerUser,
         jobCapabilities,
+        jobEnvVariables,
 
         tags,
       },
