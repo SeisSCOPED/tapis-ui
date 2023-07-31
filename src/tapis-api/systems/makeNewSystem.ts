@@ -1,10 +1,11 @@
 import { Systems } from '@tapis/tapis-typescript';
 import { apiGenerator, errorDecoder } from 'tapis-api/utils';
 
-const list = (
-  params: Systems.GetSystemsRequest, // contains all params, example: {select: 'allAttributes', listType: ListTypeEnum.All}
+const makeNewSystem = (
+  reqPostSystem: Systems.ReqPostSystem,
   basePath: string,
-  jwt: string
+  jwt: string,
+  skipCredentialCheck?: boolean
 ) => {
   const api: Systems.SystemsApi = apiGenerator<Systems.SystemsApi>(
     Systems,
@@ -12,7 +13,9 @@ const list = (
     basePath,
     jwt
   );
-  return errorDecoder<Systems.RespSystems>(() => api.getSystems(params));
+  return errorDecoder<Systems.RespBasic>(() =>
+    api.createSystem({ reqPostSystem, skipCredentialCheck })
+  );
 };
 
-export default list;
+export default makeNewSystem;

@@ -1,15 +1,21 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import { useLogin } from 'tapis-hooks/authenticator';
+import { useCreateCredentials } from 'tapis-hooks/systems';
 import { useTapisConfig } from 'tapis-hooks/context';
 import { FormikInput } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
-const Login: React.FC = () => {
-  const { login, isLoading, error } = useLogin();
-  const { accessToken } = useTapisConfig();
+type AddCredentialsProps = {
+  systemId: string;
+};
+
+const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
+  const { isLoading, isSuccess, error, createCredentials } =
+    useCreateCredentials();
+  const { claims } = useTapisConfig();
+  const currentUsername = claims['tapis/username'];
 
   const onSubmit = ({
     username,
@@ -17,7 +23,13 @@ const Login: React.FC = () => {
   }: {
     username: string;
     password: string;
-  }) => login(username, password);
+  }) => {
+    createCredentials({
+      systemId,
+      userName: currentUsername,
+      reqUpdateCredential: { loginUser: username, password },
+    });
+  };
 
   const loginSchema = Yup.object({
     username: Yup.string().required(),
@@ -29,8 +41,6 @@ const Login: React.FC = () => {
     password: '',
   };
 
-  console.log(error);
-
   return (
     <Formik
       initialValues={initialValues}
@@ -38,6 +48,7 @@ const Login: React.FC = () => {
       onSubmit={onSubmit}
     >
       <Form>
+        Credentials are not valid and must be added!
         <FormikInput
           name="username"
           label="Username"
@@ -54,14 +65,14 @@ const Login: React.FC = () => {
         <SubmitWrapper
           isLoading={isLoading}
           error={error}
-          success={accessToken && 'Successfully logged in'}
+          success={isSuccess ? 'Successfully Added Credentials' : ''}
         >
           <Button
             type="submit"
             className="btn btn-primary"
-            disabled={isLoading || accessToken != null}
+            disabled={isLoading || isSuccess}
           >
-            Log In
+            Add Credentials
           </Button>
         </SubmitWrapper>
       </Form>
@@ -69,4 +80,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default AddCredentials;

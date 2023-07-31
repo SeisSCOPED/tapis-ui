@@ -4,12 +4,11 @@ import { HashRouter as Router } from 'react-router-dom';
 import App from 'tapis-app';
 import TapisProvider from 'tapis-hooks/provider';
 import 'tapis-ui/index.css';
-import { resolveBasePath } from 'utils/resloveBasePath';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <TapisProvider basePath={"https://scoped.tapis.io"}>
+    <TapisProvider basePath={'https://scoped.tapis.io'}>
       <Router>
         <App />
       </Router>
