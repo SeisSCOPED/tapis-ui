@@ -56,7 +56,7 @@ const TagsInputs: React.FC<{ arrayHelpers: FieldArrayRenderProps }> = ({
   );
 };
 
-export const Tags: React.FC = () => {
+export const TagsSettings: React.FC = () => {
   return (
     <div>
       <FieldArray
@@ -73,4 +73,4 @@ export const Tags: React.FC = () => {
   );
 };
 
-export default Tags;
+export default TagsSettings;
