@@ -21,6 +21,9 @@ const PkiKeys: React.FC<PkiKeysProps> = ({system}) => {
           description="Your private key from the machine"
         />
         <div> Host: {system?.host}</div>
+        <a style={{whiteSpace: 'pre-line'}} href='https://github.com/jaeestee/scoped-tapis-ui/blob/main/src/tapis-app/Systems/_components/AddCredentials/AuthenticationMethods/README.md' target='_blank' rel='noreferrer'>
+          {`Authentication Method Tutorial\n`}
+        </a>
         </>
   );
 };
