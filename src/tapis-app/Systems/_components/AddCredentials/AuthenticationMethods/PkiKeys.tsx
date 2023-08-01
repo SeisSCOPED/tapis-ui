@@ -16,7 +16,9 @@ const PkiKeys: React.FC<PkiKeysProps> = ({ system }) => {
       >
         {`\n\n`}Authentication Method Tutorial
       </a>
-      <div> Host: {system?.host}</div>
+      <div style={{ whiteSpace: 'pre-line' }}>
+        Host: {system?.host} {`\n\n`}
+      </div>
       <FormikInput
         name="publicKey"
         label="Public Key"
