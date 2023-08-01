@@ -25,11 +25,11 @@ const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
 
   const system: Systems.TapisSystem | undefined = data?.result;
 
-  const isPassword = (system?.defaultAuthnMethod === AuthnEnum.Password);
-  const isPkiKeys = (system?.defaultAuthnMethod === AuthnEnum.PkiKeys);
-  const isAccessKey = (system?.defaultAuthnMethod === AuthnEnum.AccessKey);
-  const isToken = (system?.defaultAuthnMethod === AuthnEnum.Token);
-  const isCert = (system?.defaultAuthnMethod === AuthnEnum.Cert);
+  const isPassword = system?.defaultAuthnMethod === AuthnEnum.Password;
+  const isPkiKeys = system?.defaultAuthnMethod === AuthnEnum.PkiKeys;
+  const isAccessKey = system?.defaultAuthnMethod === AuthnEnum.AccessKey;
+  const isToken = system?.defaultAuthnMethod === AuthnEnum.Token;
+  const isCert = system?.defaultAuthnMethod === AuthnEnum.Cert;
 
   const { isLoading, isSuccess, error, createCredentials } =
     useCreateCredentials();
@@ -107,7 +107,7 @@ const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
       <Form>
         Credentials are not valid and must be added!
         {isPassword ? <Password /> : null}
-        {isPkiKeys ? <PkiKeys system={system}/> : null}
+        {isPkiKeys ? <PkiKeys system={system} /> : null}
         {isAccessKey ? <AccessKey /> : null}
         {isToken ? <Token /> : null}
         {isCert ? <Cert /> : null}
