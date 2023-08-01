@@ -1,10 +1,16 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import { useCreateCredentials } from 'tapis-hooks/systems';
+import { useCreateCredentials, useDetails } from 'tapis-hooks/systems';
 import { useTapisConfig } from 'tapis-hooks/context';
-import { FormikInput } from 'tapis-ui/_common';
 import { SubmitWrapper } from 'tapis-ui/_wrappers';
 import { Formik, Form } from 'formik';
+import { Systems } from '@tapis/tapis-typescript';
+import { AuthnEnum } from '@tapis/tapis-typescript-systems';
+import Password from './AuthenticationMethods/Password';
+import Token from './AuthenticationMethods/Token';
+import PkiKeys from './AuthenticationMethods/PkiKeys';
+import Cert from './AuthenticationMethods/Cert';
+import AccessKey from './AuthenticationMethods/AccessKey';
 import * as Yup from 'yup';
 
 type AddCredentialsProps = {
@@ -12,6 +18,19 @@ type AddCredentialsProps = {
 };
 
 const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
+  const { data } = useDetails({
+    systemId,
+    select: 'allAttributes',
+  });
+
+  const system: Systems.TapisSystem | undefined = data?.result;
+
+  const isPassword = (system?.defaultAuthnMethod === AuthnEnum.Password);
+  const isPkiKeys = (system?.defaultAuthnMethod === AuthnEnum.PkiKeys);
+  const isAccessKey = (system?.defaultAuthnMethod === AuthnEnum.AccessKey);
+  const isToken = (system?.defaultAuthnMethod === AuthnEnum.Token);
+  const isCert = (system?.defaultAuthnMethod === AuthnEnum.Cert);
+
   const { isLoading, isSuccess, error, createCredentials } =
     useCreateCredentials();
   const { claims } = useTapisConfig();
@@ -20,25 +39,63 @@ const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
   const onSubmit = ({
     username,
     password,
+    privateKey,
+    publicKey,
+    accessKey,
+    accessSecret,
+    accessToken,
+    refreshToken,
+    certificate,
   }: {
-    username: string;
-    password: string;
+    username?: string;
+    password?: string;
+    privateKey?: string;
+    publicKey?: string;
+    accessKey?: string;
+    accessSecret?: string;
+    accessToken?: string;
+    refreshToken?: string;
+    certificate?: string;
   }) => {
     createCredentials({
       systemId,
       userName: currentUsername,
-      reqUpdateCredential: { loginUser: username, password },
+      reqUpdateCredential: {
+        loginUser: username,
+        password,
+        privateKey,
+        publicKey,
+        accessKey,
+        accessSecret,
+        accessToken,
+        refreshToken,
+        certificate,
+      },
     });
   };
 
   const loginSchema = Yup.object({
-    username: Yup.string().required(),
-    password: Yup.string().required(),
+    // username: Yup.string().required(),
+    // password: Yup.string().required(),
+    // privateKey: Yup.string().required(),
+    // publicKey: Yup.string().required(),
+    // accessKey: Yup.string().required(),
+    // accessSecret: Yup.string().required(),
+    // accessToken: Yup.string().required(),
+    // refreshToken: Yup.string().required(),
+    // certificate: Yup.string().required(),
   });
 
   const initialValues = {
     username: '',
     password: '',
+    privateKey: '',
+    publicKey: '',
+    accessKey: '',
+    accessSecret: '',
+    accessToken: '',
+    refreshToken: '',
+    certificate: '',
   };
 
   return (
@@ -49,19 +106,11 @@ const AddCredentials: React.FC<AddCredentialsProps> = ({ systemId }) => {
     >
       <Form>
         Credentials are not valid and must be added!
-        <FormikInput
-          name="username"
-          label="Username"
-          required={true}
-          description="Your TAPIS username"
-        />
-        <FormikInput
-          name="password"
-          label="Password"
-          required={true}
-          description="Your TAPIS password"
-          type="password"
-        />
+        {isPassword ? <Password /> : null}
+        {isPkiKeys ? <PkiKeys system={system}/> : null}
+        {isAccessKey ? <AccessKey /> : null}
+        {isToken ? <Token /> : null}
+        {isCert ? <Cert /> : null}
         <SubmitWrapper
           isLoading={isLoading}
           error={error}
