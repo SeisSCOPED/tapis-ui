@@ -6,12 +6,12 @@ import { useMemo } from 'react';
 import { SystemTypeEnum } from '@tapis/tapis-typescript-systems';
 import { useFormikContext } from 'formik';
 import styles from '../CreateSystemModal.module.scss';
-import BatchSettings from './BatchSettings';
+import BatchSettings from './Batch/BatchSettings';
 import ProxySettings from './ProxySettings';
 import DtnSettings from './DtnSettings';
 import CmdSettings from './CmdSettings';
-import Tags from './Tags';
-import JobCapabilitiesSettings from './JobCapabilitiesSettings';
+import TagsSettings from './TagsSettings';
+import JobSettings from './Job/JobSettings';
 
 //Array that is used in the drop-down menus
 const runtimeTypes = Object.values(RuntimeTypeEnum);
@@ -47,13 +47,6 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
           label="Root Directory"
           required={false}
           description={`Root directory`}
-          aria-label="Input"
-        />
-        <FormikInput
-          name="jobWorkingDir"
-          label="Job Working Directory"
-          required={false}
-          description={`Job working directory`}
           aria-label="Input"
         />
         <FormikSelect
@@ -94,12 +87,12 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
             aria-label="Input"
           />
         ) : null}
+        <JobSettings />
         <BatchSettings />
         <ProxySettings />
         <DtnSettings />
         <CmdSettings />
-        <JobCapabilitiesSettings />
-        <Tags />
+        <TagsSettings />
       </Collapse>
     );
   } else {

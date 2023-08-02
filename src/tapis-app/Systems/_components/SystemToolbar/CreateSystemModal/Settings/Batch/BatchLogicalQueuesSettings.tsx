@@ -1,14 +1,16 @@
 import { FormikInput, Collapse } from 'tapis-ui/_common';
-import styles from '../CreateSystemModal.module.scss';
+import styles from '../../CreateSystemModal.module.scss';
 import { Systems } from '@tapis/tapis-typescript';
 import { Button } from 'reactstrap';
 import { FieldArray, useFormikContext, FieldArrayRenderProps } from 'formik';
 import { LogicalQueue } from '@tapis/tapis-typescript-systems';
+
 type BatchLQFieldProps = {
   item: LogicalQueue;
   index: number;
   remove: (index: number) => Systems.ReqPostSystem | undefined;
 };
+
 const BatchLogicalQueuesField: React.FC<BatchLQFieldProps> = ({
   item,
   index,
