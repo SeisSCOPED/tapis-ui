@@ -112,7 +112,7 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     rootDir: '/',
     jobRuntimes: RuntimeTypeEnum.Singularity,
     version: undefined,
-    effectiveUserId: '${apiUserId}',
+    effectiveUserId: '${}', //apiUserId
     bucketName: undefined,
 
     //batch
