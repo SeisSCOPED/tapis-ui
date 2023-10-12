@@ -66,7 +66,10 @@ const Dashboard: React.FC = () => {
   const { accessToken, claims } = useTapisConfig();
   const systems = useSystemsList({ listType: ListTypeEnum.All });
   const jobs = useJobsList({});
-  const apps = useAppsList({ select: 'jobAttributes,version', listType: ListTypeEnum.All });
+  const apps = useAppsList({
+    select: 'jobAttributes,version',
+    listType: ListTypeEnum.All,
+  });
 
   return (
     <div>

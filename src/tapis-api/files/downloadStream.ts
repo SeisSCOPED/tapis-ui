@@ -27,11 +27,11 @@ const downloadStream = (
       if (!response.body) {
         throw new Error('Download response had no body!');
       }
-      console.log("HELLO")
-      console.log(response.body)
+      console.log('HELLO');
+      console.log(response.body);
       const readableStream = response.body;
 
-      console.log(response.text())
+      console.log(response.text());
 
       // more optimized
       if (window.WritableStream && readableStream?.pipeTo) {
