@@ -4,10 +4,17 @@ import { useList } from 'tapis-hooks/apps';
 import { Apps } from '@tapis/tapis-typescript';
 import { Navbar, NavItem } from 'tapis-ui/_wrappers/Navbar';
 import { QueryWrapper } from 'tapis-ui/_wrappers';
+import { Systems } from "@tapis/tapis-typescript";
+import { ListTypeEnum } from "@tapis/tapis-typescript-systems";
+
+export const defaultParams: Apps.GetAppsRequest = {
+  select: "allAttributes",
+  listType: ListTypeEnum.All,
+};
 
 const AppsNav: React.FC = () => {
   const { data, isLoading, error } = useList(
-    {},
+    defaultParams,
     { refetchOnWindowFocus: false }
   );
   const { url } = useRouteMatch();

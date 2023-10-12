@@ -16,8 +16,10 @@ import {
   useDownload,
   DownloadStreamParams,
   usePermissions,
+  useGetConents,
 } from 'tapis-hooks/files';
 import { useNotifications } from 'tapis-app/_components/Notifications';
+
 
 type ToolbarButtonProps = {
   text: string;
@@ -60,7 +62,7 @@ const Toolbar: React.FC = () => {
   const { pathname } = useLocation();
   const systemId = pathname.split('/')[2];
   const currentPath = pathname.split('/').splice(3).join('/');
-  const { download } = useDownload();
+  const { download } = useGetConents();
   const { add } = useNotifications();
 
   const { data } = usePermissions({ systemId, path: currentPath });
