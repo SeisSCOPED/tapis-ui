@@ -13,13 +13,12 @@ import TransferModal from './TransferModal';
 import { useLocation } from 'react-router-dom';
 import { useFilesSelect } from '../FilesContext';
 import {
-  useDownload,
+  // useDownload,
   DownloadStreamParams,
   usePermissions,
   useGetConents,
 } from 'tapis-hooks/files';
 import { useNotifications } from 'tapis-app/_components/Notifications';
-
 
 type ToolbarButtonProps = {
   text: string;

@@ -1,9 +1,8 @@
 import { useMutation, MutateOptions } from 'react-query';
-import { downloadStream } from 'tapis-api/files';
 import { getContents } from 'tapis-api/files';
 import { useTapisConfig } from 'tapis-hooks';
 import QueryKeys from './queryKeys';
-import { DownloadStreamParams} from '.';
+import { DownloadStreamParams } from '.';
 
 const useGetContents = () => {
   const { basePath, accessToken } = useTapisConfig();
@@ -15,19 +14,27 @@ const useGetContents = () => {
   // In this case, move helper is called to perform the operation
   const {
     mutate,
-    mutateAsync,
+    // mutateAsync,
     isLoading,
     isError,
     isSuccess,
     data,
     error,
-    reset, 
+    reset,
   } = useMutation<Response, Error, DownloadStreamParams>(
     [QueryKeys.download, basePath, jwt],
     ({ systemId, path, destination, zip = false, onStart = null }) => {
-      const response = getContents(systemId, path, destination, zip, onStart, basePath, jwt)
-      console.log({response})
-      console.log(response)
+      const response = getContents(
+        systemId,
+        path,
+        destination,
+        zip,
+        onStart,
+        basePath,
+        jwt
+      );
+      console.log({ response });
+      console.log(response);
       return response;
     }
   );
@@ -50,6 +57,5 @@ const useGetContents = () => {
     },
   };
 };
-
 
 export default useGetContents;
