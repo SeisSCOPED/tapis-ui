@@ -1,9 +1,0 @@
-{
-  "name": "scoped-mpass-job",
-  "appId": "<username>-scoped-mpass",
-  "appVersion": "0.1",
-  "execSystemId": "<system name>",
-  "parameterSet": {
-    "appArgs": []
-  }
-}
