@@ -19,7 +19,7 @@ const JobDetail: React.FC<{ jobUuid: string }> = ({ jobUuid }) => {
         See Files
       </Link>
       r
-      <a href="http://frontera.tacc.utexas.edu:26412/lab?token=9p6UHJyh5h3pe0xp1b8x"> 
+      <a href="http://frontera.tacc.utexas.edu:26412/lab?token=9p6UHJyh5h3pe0xp1b8x">
         Jupyter Notebook
       </a>
       {job && <DescriptionList data={job} />}

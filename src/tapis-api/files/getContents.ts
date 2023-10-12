@@ -1,5 +1,5 @@
 import { errorDecoder } from 'tapis-api/utils';
-import StreamSaver from 'streamsaver';
+// import StreamSaver from 'streamsaver';
 
 const getContents = (
   systemId: string,
@@ -20,9 +20,7 @@ const getContents = (
     },
   };
 
-  return errorDecoder<Response>(() =>
-    fetch(url, config)
-  )
+  return errorDecoder<Response>(() => fetch(url, config));
 };
 
 export default getContents;

@@ -1,16 +1,16 @@
-.modal {
-  margin: 0;
+.modal-settings {
+  max-height: 38rem;
+  overflow-y: scroll;
 }
 
-.modalHeader {
-  height: 50px;
-  background: white;
-  overflow: hidden;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+.item {
+  border: 1px dotted lightgray;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin-bottom: 1em;
 }
 
-.labelStyle {
-  font-size: 14;
-  font-weight: 'bold';
+.array {
+  border: 1px solid gray;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin-bottom: 0.5em;
 }
