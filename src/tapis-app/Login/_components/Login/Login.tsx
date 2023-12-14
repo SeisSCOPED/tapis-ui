@@ -30,40 +30,52 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={loginSchema}
-      onSubmit={onSubmit}
-    >
-      <Form>
-        <FormikInput
-          name="username"
-          label="Username"
-          required={true}
-          description="Your TAPIS username"
-        />
-        <FormikInput
-          name="password"
-          label="Password"
-          required={true}
-          description="Your TAPIS password"
-          type="password"
-        />
-        <SubmitWrapper
-          isLoading={isLoading}
-          error={error}
-          success={accessToken && 'Successfully logged in'}
-        >
-          <Button
-            type="submit"
-            className="btn btn-primary"
-            disabled={isLoading || accessToken != null}
+    <div>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={loginSchema}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <FormikInput
+            name="username"
+            label="Username"
+            required={true}
+            description="Your TAPIS username"
+          />
+          <FormikInput
+            name="password"
+            label="Password"
+            required={true}
+            description="Your TAPIS password"
+            type="password"
+          />
+          <SubmitWrapper
+            isLoading={isLoading}
+            error={error}
+            success={accessToken && 'Successfully logged in'}
           >
-            Log In
-          </Button>
-        </SubmitWrapper>
-      </Form>
-    </Formik>
+            <Button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading || accessToken != null}
+            >
+              Log In
+            </Button>
+          </SubmitWrapper>
+        </Form>
+      </Formik>
+      <Button
+        onClick={() => {
+          window.location.replace(
+            'https://scoped.tapis.io/v3/oauth2/authorize?client_id=scoped&redirect_uri=https%3A%2F%2Fjaeestee.github.io%2Fscoped-tapis-ui%2F%23%2Foauth2&response_type=token'
+          );
+        }}
+        className="btn btn-primary"
+      >
+        Log In with OAuth2
+      </Button>
+    </div>
   );
 };
 
