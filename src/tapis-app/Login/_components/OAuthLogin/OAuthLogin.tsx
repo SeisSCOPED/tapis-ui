@@ -15,7 +15,7 @@ const OAuthLogin: React.FC = () => {
   useEffect(() => {
     console.log(access_token);
     setAccessToken({ access_token, expires_at, expires_in });
-    window.location.replace('/scoped-tapis-ui/#/');
+    window.location.replace('/tapis-ui/#/');
   }, []);
 
   return <></>;
