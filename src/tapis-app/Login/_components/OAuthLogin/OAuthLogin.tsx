@@ -16,6 +16,7 @@ const OAuthLogin: React.FC = () => {
     console.log(access_token);
     setAccessToken({ access_token, expires_at, expires_in });
     window.location.replace('/tapis-ui/#/');
+    // eslint-disable-next-line
   }, []);
 
   return <></>;
