@@ -66,6 +66,7 @@ const Login: React.FC = () => {
         </Form>
       </Formik>
       <Button
+        disabled={true}
         onClick={() => {
           window.location.replace(
             'https://scoped.tapis.io/v3/oauth2/authorize?client_id=scoped&redirect_uri=https%3A%2F%2Fjaeestee.github.io%2Fscoped-tapis-ui%2F%23%2Foauth2&response_type=token'
