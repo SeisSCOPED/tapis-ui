@@ -13,10 +13,9 @@ import TransferModal from './TransferModal';
 import { useLocation } from 'react-router-dom';
 import { useFilesSelect } from '../FilesContext';
 import {
-  // useDownload,
   DownloadStreamParams,
   usePermissions,
-  useGetContents,
+  useDownload,
 } from 'tapis-hooks/files';
 import { useNotifications } from 'tapis-app/_components/Notifications';
 
@@ -61,7 +60,7 @@ const Toolbar: React.FC = () => {
   const { pathname } = useLocation();
   const systemId = pathname.split('/')[2];
   const currentPath = pathname.split('/').splice(3).join('/');
-  const { download } = useGetContents();
+  const { download } = useDownload();
   const { add } = useNotifications();
 
   const { data } = usePermissions({ systemId, path: currentPath });

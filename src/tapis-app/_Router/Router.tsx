@@ -5,6 +5,7 @@ import { useLogin } from 'tapis-hooks/authenticator';
 
 import Apps from '../Apps';
 import Login from '../Login';
+import OAuthLogin from '../Login/_components/OAuthLogin';
 import Dashboard from '../Dashboard';
 import Jobs from '../Jobs';
 import Systems from '../Systems';
@@ -21,6 +22,9 @@ const Router: React.FC = () => {
       </Route>
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/oauth2">
+        <OAuthLogin />
       </Route>
       <Route
         path="/logout"
