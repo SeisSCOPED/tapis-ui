@@ -9,7 +9,7 @@ const JobDetail: React.FC<{ jobUuid: string }> = ({ jobUuid }) => {
   const { data, isLoading, error } = useDetails(jobUuid);
   const job: Jobs.Job | undefined = data?.result;
 
-  console.log(job?.execSystemOutputDir);
+  // console.log(job?.execSystemOutputDir);
 
   return (
     <QueryWrapper isLoading={isLoading} error={error}>
