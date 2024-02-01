@@ -1,14 +1,12 @@
 import React from 'react';
 import { JobDetail } from 'tapis-ui/components/jobs';
 import { PageLayout, LayoutHeader } from 'tapis-ui/_common';
-import { JobsToolbar } from "tapis-app/Jobs/_components";
-import { useDetails } from "tapis-hooks/jobs";
+import { JobsToolbar } from 'tapis-app/Jobs/_components';
+import { useDetails } from 'tapis-hooks/jobs';
 
 interface JobDetailProps {
   jobUuid: string;
 }
-
-
 
 const Layout: React.FC<JobDetailProps> = ({ jobUuid }) => {
   // eslint-disable-next-line
@@ -19,19 +17,16 @@ const Layout: React.FC<JobDetailProps> = ({ jobUuid }) => {
   //   return <div>Error: {error.message}</div>;
   // }
 
-  if (error) {
-    console.error(error); // Log the error for debugging
-    return <div>Something went wrong. Please try again later.</div>;
-  }
+  // Hides error, shows plain text instead
+  // if (error) {
+  //   console.error(error); // Log the error for debugging
+  //   return <div>Something went wrong. Please try again later.</div>;
+  // }
 
   const header = (
-    <LayoutHeader type={"sub-header"}>
+    <LayoutHeader type={'sub-header'}>
       Job Details
-      {
-        data && 
-        <JobsToolbar jobUuid={jobUuid} /> 
-      }
-      
+      {data && <JobsToolbar jobUuid={jobUuid} />}
     </LayoutHeader>
   );
 
@@ -40,7 +35,7 @@ const Layout: React.FC<JobDetailProps> = ({ jobUuid }) => {
       <JobDetail jobUuid={jobUuid}></JobDetail>
     </div>
   );
-  return <PageLayout top={header} right={body}></PageLayout>
+  return <PageLayout top={header} right={body}></PageLayout>;
 };
 
 export default Layout;
