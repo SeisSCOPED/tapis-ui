@@ -26,13 +26,13 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <GenericModal
       toggle={toggle}
       title="Confirm"
-      body={message || "Are you sure you want to continue?"}
+      body={message || 'Are you sure you want to continue?'}
       footer={
         <SubmitWrapper
-          className={""}
+          className={''}
           isLoading={isLoading}
           error={error}
-          success={isSuccess ? `Success` : ""}
+          success={isSuccess ? `Success` : ''}
           reverse={true}
         >
           <Button
