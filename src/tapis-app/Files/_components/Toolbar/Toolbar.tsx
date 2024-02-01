@@ -13,7 +13,6 @@ import TransferModal from './TransferModal';
 import { useLocation } from 'react-router-dom';
 import { useFilesSelect } from '../FilesContext';
 import {
-  // useDownload,
   DownloadStreamParams,
   usePermissions,
   useDownload,

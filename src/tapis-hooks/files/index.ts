@@ -10,7 +10,7 @@ export { default as usePermissions } from './usePermissions';
 export { default as useNativeOp } from './useNativeOp';
 export { default as useDelete } from './useDelete';
 export { default as useDownload } from './useDownload';
-export { default as useGetConents } from './useGetContents';
+export { default as useGetContents } from './useGetContents';
 
 export type MoveCopyHookParams = {
   systemId: string;
