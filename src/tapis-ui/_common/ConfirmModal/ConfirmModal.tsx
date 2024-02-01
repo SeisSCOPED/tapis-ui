@@ -26,24 +26,15 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <GenericModal
       toggle={toggle}
       title="Confirm"
-      body={message || 'Are you sure you want to continue?'}
+      body={message || "Are you sure you want to continue?"}
       footer={
         <SubmitWrapper
-          className={''}
+          className={""}
           isLoading={isLoading}
           error={error}
-          success={isSuccess ? `Success` : ''}
+          success={isSuccess ? `Success` : ""}
           reverse={true}
         >
-          <Button
-            form="newsystem-form"
-            color="primary"
-            aria-label="Submit"
-            type="submit"
-            onClick={onConfirm}
-          >
-            Confirm
-          </Button>
           <Button
             form="newsystem-form"
             color="primary"
@@ -52,6 +43,15 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             onClick={toggle}
           >
             Cancel
+          </Button>
+          <Button
+            form="newsystem-form"
+            color="primary"
+            aria-label="Submit"
+            type="submit"
+            onClick={onConfirm}
+          >
+            Confirm
           </Button>
         </SubmitWrapper>
       }
