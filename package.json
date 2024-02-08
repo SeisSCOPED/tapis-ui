@@ -46,7 +46,7 @@
     "web-vitals": "^1.1.2",
     "yup": "^0.32.11"
   },
-  "homepage": "https://seisscoped.org/tapis-ui",
+  "homepage": "https://www.seisscoped.org/tapis-ui",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

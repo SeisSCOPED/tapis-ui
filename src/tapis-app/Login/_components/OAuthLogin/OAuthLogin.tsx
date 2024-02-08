@@ -19,10 +19,14 @@ const OAuthLogin: React.FC = () => {
   //   // eslint-disable-next-line
   // }, []);
 
-  return <div>{queryString.substring(
-    queryString.indexOf('access_token=') + 13,
-    queryString.lastIndexOf('&state')
-  )}</div>;
+  return (
+    <div>
+      {queryString.substring(
+        queryString.indexOf('access_token=') + 13,
+        queryString.lastIndexOf('&state')
+      )}
+    </div>
+  );
 };
 
 export default OAuthLogin;
