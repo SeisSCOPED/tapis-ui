@@ -339,7 +339,7 @@ const FileListing: React.FC<FileListingProps> = ({
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
   // HERE IS WHERE I HAVE ADDED NEW STUFF!!!!!!!!!!!!!!!!!
 
-  if (error?.message?.includes('no credentials associated with system')) {
+  if (error?.message?.includes('Missing credentials')) {
     return <AddCredentials systemId={systemId} />;
   }
 
