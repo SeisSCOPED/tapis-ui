@@ -33,7 +33,11 @@ const useUnShareSystemPublic = () => {
     unShareSystemPublic: (
       systemId: string,
       // react-query options to allow callbacks such as onSuccess
-      options?: MutateOptions<Systems.RespBasic, Error, UnShareSystemPublicHookParams>
+      options?: MutateOptions<
+        Systems.RespBasic,
+        Error,
+        UnShareSystemPublicHookParams
+      >
     ) => {
       // Call mutate to trigger a single post-like API operation
       return mutate({ systemId }, options);

@@ -65,8 +65,12 @@ const SystemLayoutToolbar: React.FC = () => {
             aria-label="unShareSystemPublic"
           />
 
-          {modal === 'sharesystempublic' && <ShareSystemPublicModal toggle={toggle} />}
-          {modal === 'unsharesystempublic' && <UnShareSystemPublicModal toggle={toggle} />}
+          {modal === 'sharesystempublic' && (
+            <ShareSystemPublicModal toggle={toggle} />
+          )}
+          {modal === 'unsharesystempublic' && (
+            <UnShareSystemPublicModal toggle={toggle} />
+          )}
         </div>
       )}
     </div>

@@ -8,9 +8,7 @@ import { useShareSystemPublic } from 'tapis-hooks/systems';
 
 const ShareSystemPublicModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   const queryString = window.location.href;
-  const systemId = queryString.substring(
-    queryString.indexOf('systems/') + 8
-  );
+  const systemId = queryString.substring(queryString.indexOf('systems/') + 8);
 
   const { shareSystemPublic, isLoading, error, isSuccess, reset } =
     useShareSystemPublic();

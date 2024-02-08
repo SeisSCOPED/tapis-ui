@@ -8,7 +8,9 @@ const shareSystemPublic = (systemId: string, basePath: string, jwt: string) => {
     basePath,
     jwt
   );
-  return errorDecoder<Systems.RespBasic>(() => api.shareSystemPublic({ systemId }));
+  return errorDecoder<Systems.RespBasic>(() =>
+    api.shareSystemPublic({ systemId })
+  );
 };
 
 export default shareSystemPublic;

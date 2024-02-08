@@ -4,8 +4,9 @@ import SystemLayoutToolbar from './SystemLayoutToolbar';
 
 const Layout: React.FC<{ systemId: string }> = ({ systemId }) => {
   const header = (
-    <LayoutHeader type={'sub-header'}>System Details
-    <SystemLayoutToolbar/>
+    <LayoutHeader type={'sub-header'}>
+      System Details
+      <SystemLayoutToolbar />
     </LayoutHeader>
   );
 
