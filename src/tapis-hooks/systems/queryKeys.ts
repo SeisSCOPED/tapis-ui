@@ -5,6 +5,8 @@ const QueryKeys = {
   createCredentials: 'systems/credentials/createCredentials',
   makeNewSystem: 'systems/makeNewSystem',
   deleteSystem: 'systems/deleteSystem',
+  shareSystemPublic: 'systems/shareSystemPublic',
+  unShareSystemPublic: 'systems/unShareSystemPublic',
 };
 
 export default QueryKeys;
