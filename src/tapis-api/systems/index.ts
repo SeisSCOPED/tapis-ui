@@ -5,5 +5,7 @@ export { default as createCredentials } from './credentials/createCredentials';
 export { default as makeNewSystem } from './makeNewSystem';
 export { default as deleteSystem } from './deleteSystem';
 export { default as undeleteSystem } from './undeleteSystem';
-export { default as shareSystemPublic } from './shareSystemPublic';
-export { default as unShareSystemPublic } from './unShareSystemPublic';
+export { default as shareSystemPublic } from "./shareSystemPublic";
+export { default as unShareSystemPublic } from "./unShareSystemPublic";
+export { default as createChildSystem } from "./createChildSystem";
+

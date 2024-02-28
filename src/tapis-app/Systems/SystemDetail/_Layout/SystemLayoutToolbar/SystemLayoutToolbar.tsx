@@ -5,6 +5,7 @@ import styles from './SystemLayoutToolbar.module.scss';
 import { useLocation } from 'react-router-dom';
 import ShareSystemPublicModal from './ShareSystemPublicModal';
 import UnShareSystemPublicModal from './UnShareSystemPublicModal';
+import CreateChildSystemModal from './CreateChildSystemModal';
 
 type ToolbarButtonProps = {
   text: string;
@@ -49,27 +50,37 @@ const SystemLayoutToolbar: React.FC = () => {
   return (
     <div id="file-operation-toolbar">
       {pathname && (
-        <div className={styles['toolbar-wrapper']}>
+        <div className={styles["toolbar-wrapper"]}>
           <ToolbarButton
             text="Share System Publicly"
             icon="unlock"
             disabled={false}
-            onClick={() => setModal('sharesystempublic')}
+            onClick={() => setModal("sharesystempublic")}
             aria-label="shareSystemPublic"
           />
           <ToolbarButton
             text="UnShare System Publicly"
             icon="lock"
             disabled={false}
-            onClick={() => setModal('unsharesystempublic')}
+            onClick={() => setModal("unsharesystempublic")}
             aria-label="unShareSystemPublic"
           />
-
-          {modal === 'sharesystempublic' && (
+          <ToolbarButton
+            text="Create Child System"
+            icon="add"
+            disabled={false}
+            onClick={() => setModal("ConfirmModal-CreateChildSystem")}
+            aria-label="unShareSystemPublic"
+          />
+          {modal === "sharesystempublic" && (
             <ShareSystemPublicModal toggle={toggle} />
           )}
-          {modal === 'unsharesystempublic' && (
+          {modal === "unsharesystempublic" && (
             <UnShareSystemPublicModal toggle={toggle} />
+          )}
+          {modal === "ConfirmModal-CreateChildSystem" && (
+            <CreateChildSystemModal toggle={toggle}
+            />
           )}
         </div>
       )}
