@@ -1,3 +1,3 @@
 import JobsToolbar from './JobsToolbar';
 
-export default JobsToolbar; 
+export default JobsToolbar;

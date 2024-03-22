@@ -50,7 +50,7 @@ const JobsLayoutToolbar: React.FC = () => {
 
   const url = window.location.href;
   const jobUuid = url.substring(url.indexOf('jobs/') + 5);
-  console.log(jobUuid.includes('jobs'))
+  console.log(jobUuid.includes('jobs'));
   const [modal, setModal] = useState<string | undefined>(undefined);
   const { pathname } = useLocation();
   const { isLoading, isError, isSuccess, error, hideJob } = useHideJob();
@@ -59,7 +59,6 @@ const JobsLayoutToolbar: React.FC = () => {
     setModal(undefined);
     onSuccess();
   };
-
 
   return (
     <div id="file-operation-toolbar">
@@ -77,7 +76,7 @@ const JobsLayoutToolbar: React.FC = () => {
             <ConfirmModal
               toggle={toggle}
               onConfirm={() => {
-                hideJob(jobUuid)
+                hideJob(jobUuid);
               }}
               isLoading={isLoading}
               isError={isError}
