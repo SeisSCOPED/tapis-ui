@@ -1,12 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'reactstrap';
 import { Icon } from 'tapis-ui/_common';
 import styles from './JobsToolbar.module.scss';
 import { useLocation } from 'react-router-dom';
 import ConfirmModal from 'tapis-ui/_common/ConfirmModal';
 import useHideJob from 'tapis-hooks/jobs/useHideJob';
-import { useQueryClient } from 'react-query';
-import { default as queryKeys } from 'tapis-hooks/systems/queryKeys';
+import UnhideJobModal from './UnhideJobModal';
 
 type ToolbarButtonProps = {
   text: string;
@@ -42,12 +41,6 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({
 };
 
 const JobsLayoutToolbar: React.FC = () => {
-  //Allows the system list to update without the user having to refresh the page
-  const queryClient = useQueryClient();
-  const onSuccess = useCallback(() => {
-    queryClient.invalidateQueries(queryKeys.list);
-  }, [queryClient]);
-
   const url = window.location.href;
   const jobUuid = url.substring(url.indexOf('jobs/') + 5);
   console.log(jobUuid.includes('jobs'));
@@ -57,7 +50,6 @@ const JobsLayoutToolbar: React.FC = () => {
 
   const toggle = () => {
     setModal(undefined);
-    onSuccess();
   };
 
   return (
@@ -69,7 +61,14 @@ const JobsLayoutToolbar: React.FC = () => {
             icon="trash"
             disabled={jobUuid.includes('jobs')}
             onClick={() => setModal('ConfirmModal')}
-            aria-label="createSystem"
+            aria-label="hideJob"
+          />
+          <ToolbarButton
+            text="Unhide Job"
+            icon="trash"
+            disabled={false}
+            onClick={() => setModal('UnhideJobModal')}
+            aria-label="unhideJob"
           />
 
           {modal === 'ConfirmModal' && (
@@ -84,6 +83,7 @@ const JobsLayoutToolbar: React.FC = () => {
               error={error}
             />
           )}
+          {modal === 'UnhideJobModal' && <UnhideJobModal toggle={toggle} />}
         </div>
       )}
     </div>
