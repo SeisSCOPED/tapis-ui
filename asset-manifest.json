@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/tapis-ui/static/css/main.73309980.chunk.css",
-    "main.js": "/tapis-ui/static/js/main.680d1f63.chunk.js",
-    "main.js.map": "/tapis-ui/static/js/main.680d1f63.chunk.js.map",
-    "runtime-main.js": "/tapis-ui/static/js/runtime-main.466b41e2.js",
-    "runtime-main.js.map": "/tapis-ui/static/js/runtime-main.466b41e2.js.map",
+    "main.css": "/tapis-ui/static/css/main.d86de3c1.chunk.css",
+    "main.js": "/tapis-ui/static/js/main.5a55f841.chunk.js",
+    "main.js.map": "/tapis-ui/static/js/main.5a55f841.chunk.js.map",
+    "runtime-main.js": "/tapis-ui/static/js/runtime-main.619c4614.js",
+    "runtime-main.js.map": "/tapis-ui/static/js/runtime-main.619c4614.js.map",
     "static/css/2.d5e620ed.chunk.css": "/tapis-ui/static/css/2.d5e620ed.chunk.css",
-    "static/js/2.9d8de173.chunk.js": "/tapis-ui/static/js/2.9d8de173.chunk.js",
-    "static/js/2.9d8de173.chunk.js.map": "/tapis-ui/static/js/2.9d8de173.chunk.js.map",
-    "static/js/3.0db8c8af.chunk.js": "/tapis-ui/static/js/3.0db8c8af.chunk.js",
-    "static/js/3.0db8c8af.chunk.js.map": "/tapis-ui/static/js/3.0db8c8af.chunk.js.map",
+    "static/js/2.e5dce632.chunk.js": "/tapis-ui/static/js/2.e5dce632.chunk.js",
+    "static/js/2.e5dce632.chunk.js.map": "/tapis-ui/static/js/2.e5dce632.chunk.js.map",
+    "static/js/3.e3694e65.chunk.js": "/tapis-ui/static/js/3.e3694e65.chunk.js",
+    "static/js/3.e3694e65.chunk.js.map": "/tapis-ui/static/js/3.e3694e65.chunk.js.map",
     "index.html": "/tapis-ui/index.html",
     "static/css/2.d5e620ed.chunk.css.map": "/tapis-ui/static/css/2.d5e620ed.chunk.css.map",
-    "static/css/main.73309980.chunk.css.map": "/tapis-ui/static/css/main.73309980.chunk.css.map",
-    "static/js/2.9d8de173.chunk.js.LICENSE.txt": "/tapis-ui/static/js/2.9d8de173.chunk.js.LICENSE.txt",
+    "static/css/main.d86de3c1.chunk.css.map": "/tapis-ui/static/css/main.d86de3c1.chunk.css.map",
+    "static/js/2.e5dce632.chunk.js.LICENSE.txt": "/tapis-ui/static/js/2.e5dce632.chunk.js.LICENSE.txt",
     "static/media/index.css": "/tapis-ui/static/media/Cortal-Icons-1.2.a0d8332a.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.466b41e2.js",
+    "static/js/runtime-main.619c4614.js",
     "static/css/2.d5e620ed.chunk.css",
-    "static/js/2.9d8de173.chunk.js",
-    "static/css/main.73309980.chunk.css",
-    "static/js/main.680d1f63.chunk.js"
+    "static/js/2.e5dce632.chunk.js",
+    "static/css/main.d86de3c1.chunk.css",
+    "static/js/main.5a55f841.chunk.js"
   ]
 }
