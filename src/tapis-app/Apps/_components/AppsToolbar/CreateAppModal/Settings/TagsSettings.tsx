@@ -1,75 +1,69 @@
-import { FormikInput, Collapse } from 'tapis-ui/_common';
-import styles from "../CreateAppModal.module.scss";
-import { Systems } from '@tapis/tapis-typescript';
-import { Button } from 'reactstrap';
-import { FieldArray, useFormikContext, FieldArrayRenderProps } from 'formik';
+import React, { useState } from "react";
+import { Button, Input, FormGroup, Label, Collapse } from "reactstrap";
+import { useFormikContext, FieldArray } from "formik";
+import { Apps } from "@tapis/tapis-typescript";
 
-type TagsFieldProps = {
-  item: string;
-  index: number;
-  remove: (index: number) => Systems.ReqPostSystem | undefined;
-};
-const TagsField: React.FC<TagsFieldProps> = ({ item, index, remove }) => {
+const TagsSettings: React.FC = () => {
+  const { values, setFieldValue } = useFormikContext<Apps.ReqPostApp>();
+  const [newTag, setNewTag] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const tags = values.tags ?? [];
+
+  const toggleCollapse = () => setIsOpen(!isOpen);
+
+  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && newTag.trim() !== "") {
+      e.preventDefault(); // Prevent form submission
+      const newTags = [...tags, newTag.trim()];
+      setFieldValue("tags", newTags);
+      setNewTag(""); // Clear input for next tag
+    }
+  };
+
+  const handleRemoveTag = (index: number) => {
+    const newTags = tags.filter((_, tagIndex) => index !== tagIndex);
+    setFieldValue("tags", newTags);
+  };
+
   return (
     <>
-      <Collapse open={!item} title={`Tag`} className={styles['item']}>
-        <FormikInput
-          name={`tags[${index}]`}
-          label="Tag"
-          required={true}
-          description="Tag for the system"
+      <Button
+        color="secondary"
+        onClick={toggleCollapse}
+        style={{ marginBottom: "1rem" }}
+      >
+        Manage Tags
+      </Button>
+      <Collapse isOpen={isOpen}>
+          <Input
+            type="text"
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+            onKeyDown={handleAddTag}
+            placeholder="Type tag and press Enter"
+          />
+        <FieldArray
+          name="tags"
+          render={() => (
+            <>
+              {tags.map((tag, index) => (
+                <FormGroup key={index} row>
+                  <Label className="col-md-10">{tag}</Label>
+                  <Button
+                    className="col-md-2"
+                    size="sm"
+                    onClick={() => handleRemoveTag(index)}
+                  >
+                    Remove
+                  </Button>
+                </FormGroup>
+              ))}
+            </>
+          )}
         />
-        <Button onClick={() => remove(index)} size="sm">
-          Remove
-        </Button>
       </Collapse>
     </>
-  );
-};
-
-const TagsInputs: React.FC<{ arrayHelpers: FieldArrayRenderProps }> = ({
-  arrayHelpers,
-}) => {
-  const { values } = useFormikContext();
-
-  const tags = (values as Partial<Systems.ReqPostSystem>)?.tags ?? [];
-
-  return (
-    <Collapse
-      open={tags.length > 0}
-      title="Tags"
-      note={`${tags.length} items`}
-      className={styles['array']}
-    >
-      {tags.map((tagInput, index) => (
-        <TagsField
-          key={`tags[${index}]`}
-          item={tagInput}
-          index={index}
-          remove={arrayHelpers.remove}
-        />
-      ))}
-      <Button onClick={() => arrayHelpers.push({})} size="sm">
-        + Add Tag
-      </Button>
-    </Collapse>
-  );
-};
-
-export const TagsSettings: React.FC = () => {
-  return (
-    <div>
-      <FieldArray
-        name="tags"
-        render={(arrayHelpers) => {
-          return (
-            <>
-              <TagsInputs arrayHelpers={arrayHelpers} />
-            </>
-          );
-        }}
-      />
-    </div>
   );
 };
 
