@@ -1,5 +1,6 @@
 {
   "files": {
+
     "main.css": "/tapis-ui/static/css/main.04aaf2f5.chunk.css",
     "main.js": "/tapis-ui/static/js/main.d055c225.chunk.js",
     "main.js.map": "/tapis-ui/static/js/main.d055c225.chunk.js.map",
@@ -22,5 +23,6 @@
     "static/js/2.286e293d.chunk.js",
     "static/css/main.04aaf2f5.chunk.css",
     "static/js/main.d055c225.chunk.js"
+
   ]
 }
