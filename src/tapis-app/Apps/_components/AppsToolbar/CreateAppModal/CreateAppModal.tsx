@@ -497,7 +497,7 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                     required={false}
                     data-testid="runtimeOptions"
                   >
-                    <option defaultValue={''}>Please select a runtime</option>
+                    <option defaultValue={''}>Please select a runtime option</option>
                     {runtimeOptionsValues.map((values) => {
                       return <option>{values}</option>;
                     })}
