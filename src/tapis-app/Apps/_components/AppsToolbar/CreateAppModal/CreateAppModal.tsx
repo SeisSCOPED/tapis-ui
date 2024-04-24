@@ -18,7 +18,6 @@ import {
   RuntimeEnum,
   RuntimeOptionEnum,
   JobTypeEnum,
-  // JobAttributes,
 } from '@tapis/tapis-typescript-apps';
 
 import {
@@ -28,7 +27,6 @@ import {
   ParameterSetLogConfig,
   AppFileInput,
   AppFileInputArray,
-  // ReqSubscribe
 } from '@tapis/tapis-typescript-apps';
 
 const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
@@ -49,7 +47,7 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
   }, [setSimplified, simplified]);
 
   const runtimeValues = Object.values(RuntimeEnum);
-  // const runtimeOptionsValues = Object.values(RuntimeOptionEnum); // as RuntimeOptionEnum[];
+  const runtimeOptionsValues = Object.values(RuntimeOptionEnum);
 
   const validationSchema = Yup.object({
     id: Yup.string()
@@ -87,13 +85,10 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     enabled: Yup.boolean(),
     locked: Yup.boolean(),
     runtimeVersion: Yup.string(),
-    // runtimeOptions: Yup.string()
-    //   .nullable(true) // Allows null if nothing is selected
-    //   .oneOf(
-    //     [...runtimeOptionsValues, ''],
-    //     "Invalid runtime option"
-    //   )
-    //   .required("Runtime option is required unless using Docker"),
+    runtimeOptions: Yup.string()
+      .nullable(true)
+      .oneOf([...runtimeOptionsValues, ''], 'Invalid runtime option')
+      .required('Runtime option is required unless using Docker'),
     maxJobs: Yup.number().integer('Max Jobs must be an integer').nullable(),
     maxJobsPerUser: Yup.number()
       .integer('Max Jobs Per User must be an integer')
@@ -183,7 +178,7 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     containerImage: '',
     description: undefined,
     runtime: undefined,
-    runtimeOptions: [RuntimeOptionEnum.SingularityRun],
+    runtimeOptions: undefined,
     jobType: undefined,
 
     // Advanced Attributes
@@ -284,7 +279,7 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     containerImage: string;
     description: string | undefined;
     runtime: RuntimeEnum | undefined;
-    runtimeOptions: RuntimeOptionEnum[] | undefined;
+    runtimeOptions: RuntimeOptionEnum | undefined;
     jobType: JobTypeEnum | undefined;
     owner: string | undefined;
     enabled: boolean | undefined;
@@ -295,7 +290,6 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
     strictFileInputs: boolean | undefined;
     tags: string[] | undefined;
 
-    // jobAttributes: JobAttributes;
     jobAttributes: {
       // jobDescription: string | undefined;
       dynamicExecSystem: boolean | undefined;
@@ -311,7 +305,6 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       isMpi: boolean | undefined;
       mpiCmd: string | undefined;
       cmdPrefix: string | undefined;
-      // parameterSet: ParameterSet;
       parameterSet: {
         appArgs: Array<AppArgSpec> | undefined;
         containerArgs: Array<AppArgSpec> | undefined;
@@ -378,6 +371,8 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
       },
     });
 
+    const runtimeOptionsArray = runtimeOptions ? [runtimeOptions] : undefined;
+
     createApp(
       {
         reqPostApp: {
@@ -386,7 +381,7 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
           containerImage,
           description,
           runtime,
-          runtimeOptions: [RuntimeOptionEnum.SingularityRun], // This is bad, default is non but backend doesnt allow it
+          runtimeOptions: runtimeOptionsArray,
           jobType,
           owner,
           enabled,
@@ -494,23 +489,20 @@ const CreateAppModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
                   })}
                 </FormikSelect>
 
-                {/* {formikProps.values.runtime !== RuntimeEnum.Docker && (
+                {formikProps.values.runtime !== RuntimeEnum.Docker && (
                   <FormikSelect
                     name="runtimeOptions"
                     description="The runtime command for the application"
                     label="Runtime Options"
-                    required={
-                      formikProps.values.runtime === RuntimeEnum.Singularity
-                    }
+                    required={false}
                     data-testid="runtimeOptions"
                   >
-                    <option value="">Please select a runtime command</option>
-                    {runtimeOptionsValues.map((option) => {
-                      return <option value={Array(String(option))}> {[option]} </option>;
+                    <option defaultValue={''}>Please select a runtime</option>
+                    {runtimeOptionsValues.map((values) => {
+                      return <option>{values}</option>;
                     })}
                   </FormikSelect>
-                )} */}
-
+                )}
                 <FormGroup check>
                   <Label check size="sm" className={`form-field__label`}>
                     <Input type="checkbox" onChange={onChange} />
