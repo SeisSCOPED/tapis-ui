@@ -66,10 +66,10 @@ const Login: React.FC = () => {
         </Form>
       </Formik>
       <Button
-        disabled={true}
+        disabled={false} //change this to true to prevent users from being able to log in this way
         onClick={() => {
           window.location.replace(
-            'https://dev.develop.tapis.io/v3/oauth2/authorize?client_id=Wnpdp7Z8MM8GB&redirect_uri=https%3A%2F%2Fseisscoped.org%2Ftapis-ui%2F%23%2Foauth2&response_type=token'
+            'https://scoped.tapis.io/v3/oauth2/authorize?client_id=seisscoped&redirect_uri=https%3A%2F%2Fseisscoped.org%2Ftapis-ui%2F%23%2Foauth2&response_type=token'
           );
         }}
         className="btn btn-primary"
