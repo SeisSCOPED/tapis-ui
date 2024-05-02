@@ -309,75 +309,73 @@ const CreateSystemModal: React.FC<ToolbarModalProps> = ({ toggle }) => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {() => (
-              <Form id="newsystem-form">
-                <FormGroup check>
-                  <Label check size="sm" className={`form-field__label`}>
-                    <Input type="checkbox" onChange={onChange} />
-                    Advanced Settings
-                  </Label>
-                </FormGroup>
-                <FormikInput
-                  name="sysname"
-                  label="System Name"
+            <Form id="newsystem-form">
+              <FormGroup check>
+                <Label check size="sm" className={`form-field__label`}>
+                  <Input type="checkbox" onChange={onChange} />
+                  Advanced Settings
+                </Label>
+              </FormGroup>
+              <FormikInput
+                name="sysname"
+                label="System Name"
+                required={true}
+                description={`System name`}
+                aria-label="systemName"
+              />
+              <FormikInput
+                name="description"
+                label="Description"
+                required={false}
+                description={`System description`}
+                aria-label="description"
+              />
+              <FormikSelect
+                name="systemType"
+                description="The system type"
+                label="System Type"
+                required={true}
+                data-testid="systemType"
+              >
+                <option disabled value={''}>
+                  Select a system type
+                </option>
+                {systemTypes.map((values) => {
+                  return <option>{values}</option>;
+                })}
+              </FormikSelect>
+              <FormikInput
+                name="host"
+                label="Host"
+                required={true}
+                description={`Host of the system`}
+                aria-label="host"
+              />
+              <FormikSelect
+                name="defaultAuthnMethod"
+                description="Authentication method for the system"
+                label="Default Authentication Method"
+                required={true}
+                data-testid="defaultAuthnMethod"
+              >
+                <option disabled value="">
+                  Select a default athenication method
+                </option>
+                {authnMethods.map((values) => {
+                  return <option>{values}</option>;
+                })}
+              </FormikSelect>
+              {true ? (
+                <FormikCheck
+                  name="canExec"
                   required={true}
-                  description={`System name`}
-                  aria-label="Input"
+                  label="Can Execute"
+                  description={'Decides if the system can execute'}
                 />
-                <FormikInput
-                  name="description"
-                  label="Description"
-                  required={false}
-                  description={`System description`}
-                  aria-label="Input"
-                />
-                <FormikSelect
-                  name="systemType"
-                  description="The system type"
-                  label="System Type"
-                  required={true}
-                  data-testid="systemType"
-                >
-                  <option disabled value={''}>
-                    Select a system type
-                  </option>
-                  {systemTypes.map((values) => {
-                    return <option>{values}</option>;
-                  })}
-                </FormikSelect>
-                <FormikInput
-                  name="host"
-                  label="Host"
-                  required={true}
-                  description={`Host of the system`}
-                  aria-label="Input"
-                />
-                <FormikSelect
-                  name="defaultAuthnMethod"
-                  description="Authentication method for the system"
-                  label="Default Authentication Method"
-                  required={true}
-                  data-testid="defaultAuthnMethod"
-                >
-                  <option disabled value="">
-                    Select a default athenication method
-                  </option>
-                  {authnMethods.map((values) => {
-                    return <option>{values}</option>;
-                  })}
-                </FormikSelect>
-                {true ? (
-                  <FormikCheck
-                    name="canExec"
-                    required={true}
-                    label="Can Execute"
-                    description={'Decides if the system can execute'}
-                  />
-                ) : null}
+              ) : null}
 
-                <AdvancedSettings simplified={simplified} />
-              </Form>
-            )}
+              <AdvancedSettings simplified={simplified} />
+            </Form>
           </Formik>
         </div>
       }

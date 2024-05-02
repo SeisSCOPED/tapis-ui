@@ -71,14 +71,14 @@ const JobsToolbar: React.FC<{ jobUuid: string }> = ({ jobUuid }) => {
             icon="copy"
             disabled={false}
             onClick={handleClick}
-            aria-label="createSystem"
+            aria-label="seeFiles"
           />
           <ToolbarButton
             text="Cancel Job"
             icon="trash"
             disabled={false}
             onClick={() => setModal('ConfirmModal')}
-            aria-label="createSystem"
+            aria-label="cancelJob"
           />
 
           {modal === 'ConfirmModal' && (

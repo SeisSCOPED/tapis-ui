@@ -47,7 +47,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProp> = ({ simplified }) => {
           label="Root Directory"
           required={false}
           description={`Root directory`}
-          aria-label="Input"
+          aria-label="rootDir"
         />
         <FormikSelect
           name="jobRuntimes"

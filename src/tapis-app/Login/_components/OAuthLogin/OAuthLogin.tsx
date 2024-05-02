@@ -20,7 +20,7 @@ const OAuthLogin: React.FC = () => {
   // }, []);
 
   return (
-    <div>
+    <div data-testid="token">
       {queryString.substring(
         queryString.indexOf('access_token=') + 13,
         queryString.lastIndexOf('&state')
