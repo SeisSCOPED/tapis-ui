@@ -6,4 +6,4 @@ For guidance on website navigation and project development resources, please ref
 
 Main SeisSCOPED Website: [https://seisscoped.org/](https://seisscoped.org/)
 
-SeisSCOPED Tapis UI Website: [https://seisscoped.org/tapis-ui/#/](https://seisscoped.org/tapis-ui/#/)
+SeisSCOPED Tapis UI Website: [https://scoped.tapis.io/#/](https://scoped.tapis.io/#/)
